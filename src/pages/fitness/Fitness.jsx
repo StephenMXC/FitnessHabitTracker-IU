@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './fitness.css';
-import gymImage from '../../assets/gymImage.jpg';
+import gymImage from '../../assets/gymImage.png';
 import { IoFitness } from "react-icons/io5";
 
 
@@ -18,13 +18,13 @@ const Fitness = () => {
                     {/* the "Start your journey" middle section of the header of this div. */}
                     <div className="Start-your-journey">
                         <h1>Start Your Journey</h1>
-                        <p>"Create your account to unlock analytics and goals."</p>
+                        <p>Create your account to unlock analytics and goals.</p>
 
                     </div>
                     {/* additional motivational quotes in the last section of the header of this div. */}
                     <div className="motivational-quotes">
-                        <div className='left-one'>Your gateway to a better life.</div>
-                        <div className='right-one'>Healthy life, Happy life.</div>
+                        <section className='left-one'>Your gateway to a better life.</section>
+                        
                     </div>
                 </div>
                 {/* the body section of the left div containing input fields and a button */}
