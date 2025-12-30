@@ -1,0 +1,73 @@
+
+.habits-container {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+}
+
+.habits-container h1 {
+    text-align: center;
+    color: #333;
+}
+
+.habits-input {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.habits-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.habits-input button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.habits-input button:hover {
+    background-color: #0056b3;
+}
+
+.habits-list {
+    list-style: none;
+    padding: 0;
+}
+
+.habit-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+}
+
+.habit-item.completed span {
+    text-decoration: line-through;
+    color: #999;
+}
+
+.habit-item button {
+    margin-left: auto;
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.habit-item button:hover {
+    background-color: #c82333;
+}
