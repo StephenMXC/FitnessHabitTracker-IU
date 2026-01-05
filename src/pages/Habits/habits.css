@@ -4,7 +4,7 @@
   color: #ff4500;
 }
 
-
+/* Main Page Container */
 .main-page-container {
   display: flex;
   flex-direction: column;
@@ -12,7 +12,7 @@
   padding: 20px;
   min-height: 100vh;
 }
-
+/* Header */
 .header {
   padding: 1rem;
   display: flex;
@@ -48,14 +48,16 @@
   flex-direction: row;
   gap: 20px;
   margin-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
-
+/* Cards Section */
 .current-streak-card {
   width: 300px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.124);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 1rem;
@@ -70,92 +72,145 @@
   align-items: flex-end;
 }
 
-.days-from-last-week, .rate-from-last-week {
+.days-from-last-week,
+.rate-from-last-week {
   color: #1eff00;
   font-size: 18px;
 }
+
 .habits-from-last-week {
   color: #ffffff;
   font-size: 18px;
 }
 
-.habit-form {
-  width: 100%;
-  max-width: 600px;
-  background-color: white;
-  border-radius: 5px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.goals-card {
+  width: 300px;
+  height: 355px;
+  background: rgba(255, 255, 255, 0.124);
+  background-position: bottom;
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 20px 20px;
+  margin: 10px;
 }
 
-.habit-form input[type="text"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-.habit-form .form-buttons {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.habit-form .form-buttons button {
-  background-color: #52b6ff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 15px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-left: 10px;
-}
-
-.habit-form .form-buttons button:hover {
-  background-color: #1e90ff;
-}
-
-.habit-list {
-  width: 100%;
-  max-width: 600px;
-}
-
-.habit-item {
-  background-color: white;
-  border-radius: 5px;
-  padding: 15px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.reading-card-header {
+  background-image: url('../../assets/readingImage.jpg');
+  padding: 4px;
   display: flex;
   justify-content: space-between;
+  flex-direction: row;
+  align-items: flex-end;
+  width: 269px;
+  height: 150px;
+  border-radius: 12px;
+}
+
+.daily-goal-container {
+  background: rgba(0, 128, 0, 0.589);
+  width: 120px;
+  height: 50px;
+  border-radius: 12px 12px;
+  padding-left: 5px;
+}
+
+.daily-goal {
+  width: 170px;
+  margin-top: 10px;
+  font-size: 21px;
+  color: #00ff15;
+}
+
+.habit-body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 4px;
+  gap: 52px;
+}
+
+.habit-footer {
+  display: flex;
+  justify-content: center;
   align-items: center;
+  padding: 10px;
 }
 
-.habit-item .habit-name {
-  font-size: 18px;
-  color: #333;
-}
-
-.habit-item .delete-button {
-  background-color: #ff4d4d;
-  color: white;
+.mark-complete-button {
+  width: 234px;
+  height: 40px;
+  background-color: #00b809;
+  background: blur(10px);
+  color: rgb(0, 0, 0);
+  border-radius: 40px;
   border: none;
-  border-radius: 5px;
-  padding: 8px 12px;
-  font-size: 14px;
-  cursor: pointer;
 }
 
-.habit-item .delete-button:hover {
-  background-color: #e60000;
+.habit-cards {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
-.no-habits-message {
-  font-size: 16px;
-  color: #666;
-  text-align: center;
-  margin-top: 50px;
+.stretching-card-header {
+  background-image: url('../../assets/stretchingStonk.jpg');
+  padding: 4px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: flex-end;
+  width: 269px;
+  height: 150px;
+  border-radius: 12px;
+}
+
+.stretching-body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 4px;
+  gap: 52px;
+}
+
+.no-social-media-card-header {
+  background-image: url('../../assets/noSocialMedia.jpg');
+  padding: 4px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: flex-end;
+  width: 269px;
+  height: 150px;
+  border-radius: 12px;
+}
+
+.daily-nosocialmedia-goal-container {
+  background: rgba(0, 128, 0, 0.589);
+  width: 170px;
+  height: 50px;
+  border-radius: 12px 12px;
+  padding-left: 5px;
+}
+.meditation-card-header {
+  background-image: url('../../assets/Meditate.jpg');
+  padding: 4px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: flex-end;
+  width: 269px;
+  height: 150px;
+  border-radius: 12px;
+}
+
+
+
+.percentage-circle {
+  height: 46px;
+  color: rgb(0, 47, 255);
 }

@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import './habits.css';
 import { FaPlus } from "react-icons/fa";
 import { MdLocalFireDepartment } from "react-icons/md";
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const Habits = () => {
+    const [percentage, setPercentage] = useState(66);
     return (
         <div className='main-page-containter'>
             <div className='header'>
@@ -16,13 +20,13 @@ const Habits = () => {
                 </div>
 
             </div>
-            {/* card section */}
+            {/***************** card section *******************/}
             <section className='currentstreak-totalhabits-completionrate-cards'>
                 {/* Current Streak Card */}
                 <div className='current-streak-card'>
                     <div className='card-header'>
                         <h2>Current Streak</h2>
-                        <div className='logo'><MdLocalFireDepartment className='streak-icon'/></div>
+                        <div className='logo'><MdLocalFireDepartment className='streak-icon' /></div>
                     </div>
                     <div>
                         <h1>12 Days</h1>
@@ -34,9 +38,9 @@ const Habits = () => {
                 <div className='current-streak-card'>
                     <div className='card-header'>
                         <h2>Total Habits</h2>
-                        <div className='logo'><MdLocalFireDepartment className='streak-icon'/></div>
+                        <div className='logo'><MdLocalFireDepartment className='streak-icon' /></div>
                     </div>
-                    <div className='body'>
+                    <div>
                         <h1>12 Days</h1>
                         <p className='habits-from-last-week'> No change</p>
                     </div>
@@ -46,9 +50,9 @@ const Habits = () => {
                 <div className='current-streak-card'>
                     <div className='card-header'>
                         <h2>Completion Rate</h2>
-                        <div className='logo'><MdLocalFireDepartment className='streak-icon'/></div>
+                        <div className='logo'><MdLocalFireDepartment className='streak-icon' /></div>
                     </div>
-                    <div className='body'>
+                    <div>
                         <h1>12 Days</h1>
                         <p className='rate-from-last-week'> <FaPlus /> 5% improvement</p>
                     </div>
@@ -57,24 +61,103 @@ const Habits = () => {
 
             </section>
 
+            {/***************** Habit Cards ******************/}
+            {/* Reading Card */}
             <div className='habit-cards'>
-                <div className='habit-header'>
-                    <div className='daily-goal'> Daily Goal</div>
+                <div className='goals-card'>
+                    <div className='reading-card-header'>
+                        <div className='daily-goal-container'>
+                            <h2 className='daily-goal'>Daily Goal</h2>
+                        </div>
+                        <BsThreeDotsVertical className='three-dots' />
+                    </div>
+                    <div className='habit-body'>
+                        <div className='reading-rate'>
+                            <h2>Reading</h2>
+                            <div className='length-of-engagement'>30 mins/day</div>
+                        </div>
+                        <div className='progress-circle'>
+                            <CircularProgressbar className='percentage-circle' value={percentage} text={`${percentage}%`} />
+                        </div>
+                    </div>
+                    <div className='habit-footer'> 
+                        <button className='mark-complete-button'>Mark Complete</button>
+
+                    </div>
+
                 </div>
 
-                <div className='habit-body'>
-                    <h1>Reading</h1>
-                    <p>30 min/day </p>
-                    <button className='mark-complete-button'>Mark Complete</button>
+                {/* Stretching Card */}
+                <div className='goals-card'>
+                    <div className='stretching-card-header'>
+                        <div className='daily-goal-container'>
+                            <h2 className='daily-goal'>Completed</h2>
+                        </div>
+                        <BsThreeDotsVertical className='three-dots' />
+                    </div>
+                    <div className='stretching-body'>
+                        <div className='reading-rate'>
+                            <h2>Stretching</h2>
+                            <div className='length-of-engagement'>15 mins/day</div>
+                        </div>
+                        <div className='progress-circle'>
+                            <CircularProgressbar className='percentage-circle' value={percentage} text={`${percentage}%`} />
+                        </div>
+                    </div>
+                    <div className='habit-footer'>
+                        <button className='mark-complete-button'>Done for today</button>
+
+                    </div>
+
                 </div>
 
+                {/* No Social Media Card */}
+                <div className='goals-card'>
+                    <div className='no-social-media-card-header'>
+                        {/* <div className='daily-nosocialmedia-goal-container'>
+                            <h2 className='daily-goal'>No Social Media</h2>
+                        </div> */}
+                        <BsThreeDotsVertical className='three-dots' />
+                    </div>
+                    <div className='habit-body'>
+                        <div className='reading-rate'>
+                            <h2>No Social Media</h2>
+                            <div className='length-of-engagement'>Until 6PM</div>
+                        </div>
+                        <div className='progress-circle'>
+                            <CircularProgressbar className='percentage-circle' value={percentage} text={`${percentage}%`} />
+                        </div>
+                    </div>
+                    <div className='habit-footer'>
+                        <button className='mark-complete-button'>Check In</button>
 
+                    </div>
 
+                </div>
 
+                {/* Meditation Card */}
+                <div className='goals-card'>
+                    <div className='meditation-card-header'>
+                        {/* <div className='daily-goal-container'>
+                            <h2 className='daily-goal'>Daily Goal</h2>
+                        </div> */}
+                        <BsThreeDotsVertical className='three-dots' />
+                    </div>
+                    <div className='habit-body'>
+                        <div className='reading-rate'>
+                            <h2>Meditation</h2>
+                            <div className='length-of-engagement'>10 mins/day</div>
+                        </div>
+                        <div className='progress-circle'>
+                            <CircularProgressbar className='percentage-circle' value={percentage} text={`${percentage}%`} />
+                        </div>
+                    </div>
+                    <div className='habit-footer'>
+                        <button className='mark-complete-button'>Mark Complete</button>
 
+                    </div>
 
-
-
+                </div>
             </div>
         </div>
     );
