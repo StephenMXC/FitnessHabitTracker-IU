@@ -5,6 +5,10 @@ import { MdLocalFireDepartment } from "react-icons/md";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { BsThreeDotsVertical } from "react-icons/bs";
+import DailyGoalContainer from '../../components/DailyGoalContainer/DailyGoalContainer.jsx';
+import StatCard from '../../components/StatCard/StatCard.jsx';
+import { STATS_CARD_DATA } from './habitsConstant.jsx';
+
 
 const Habits = () => {
     const [percentage, setPercentage] = useState(66);
@@ -21,50 +25,28 @@ const Habits = () => {
 
             </div>
             {/***************** card section *******************/}
-            <section className='currentstreak-totalhabits-completionrate-cards'>
-                {/* Current Streak Card */}
-                <div className='current-streak-card'>
-                    <div className='card-header'>
-                        <h2>Current Streak</h2>
-                        <div className='logo'><MdLocalFireDepartment className='streak-icon' /></div>
-                    </div>
-                    <div>
-                        <h1>12 Days</h1>
-                        <p className='days-from-last-week'> <FaPlus />  2 days from last week</p>
-                    </div>
-                </div>
-
-                {/* Total Habits Card */}
-                <div className='current-streak-card'>
-                    <div className='card-header'>
-                        <h2>Total Habits</h2>
-                        <div className='logo'><MdLocalFireDepartment className='streak-icon' /></div>
-                    </div>
-                    <div>
-                        <h1>12 Days</h1>
-                        <p className='habits-from-last-week'> No change</p>
-                    </div>
-                </div>
-
-                {/* Completion Rate Card */}
-                <div className='current-streak-card'>
-                    <div className='card-header'>
-                        <h2>Completion Rate</h2>
-                        <div className='logo'><MdLocalFireDepartment className='streak-icon' /></div>
-                    </div>
-                    <div>
-                        <h1>12 Days</h1>
-                        <p className='rate-from-last-week'> <FaPlus /> 5% improvement</p>
-                    </div>
-                </div>
 
 
+            <section className="currentstreak-totalhabits-completionrate-cards">
+                {STATS_CARD_DATA.map(stat => (
+                    <StatCard
+                        key={stat.id}
+                        title={stat.title}
+                        value={stat.value}
+                        subtitle={stat.subtitle}
+                    />
+                ))}
             </section>
+
+
 
             {/***************** Habit Cards ******************/}
             {/* Reading Card */}
             <div className='habit-cards'>
-                <div className='goals-card'>
+                <DailyGoalContainer DailyGoal="Daily Goal" Title="Reading"
+                    engagementTime="30 mins/day" buttonTitle="Mark Complete" buttonAction={() => { }} percentage={percentage} />
+
+                {/* <div className='goals-card'>
                     <div className='reading-card-header'>
                         <div className='daily-goal-container'>
                             <h2 className='daily-goal'>Daily Goal</h2>
@@ -85,7 +67,7 @@ const Habits = () => {
 
                     </div>
 
-                </div>
+                </div> */}
 
                 {/* Stretching Card */}
                 <div className='goals-card'>
