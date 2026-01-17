@@ -96,7 +96,6 @@
 }
 
 .reading-card-header {
-  background-image: url('../../assets/readingImage.jpg');
   padding: 4px;
   display: flex;
   justify-content: space-between;
