@@ -1,5 +1,5 @@
 import readingImage from '../../assets/readingImage.jpg';
-
+im
 
 
 export const HABITS_CARD_DATA = [
