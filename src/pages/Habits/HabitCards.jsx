@@ -1,5 +1,8 @@
 import readingImage from '../../assets/readingImage.jpg';
-im
+import stretchingImage from '../../assets/stretchingStonk.jpg';
+import noSocialMediaImage from '../../assets/noSocialMedia.jpg';
+import meditationImage from '../../assets/Meditate.jpg';
+
 
 
 export const HABITS_CARD_DATA = [
@@ -9,7 +12,7 @@ export const HABITS_CARD_DATA = [
     title: "Reading",
     engagementTime: "30 mins/day",
     buttonTitle: "Mark Complete",
-    image: assets/readingImage.jpg,
+    image: readingImage, 
   },
   {
     id: "stretching",
@@ -17,6 +20,7 @@ export const HABITS_CARD_DATA = [
     title: "Stretching",
     engagementTime: "15 mins/day",
     buttonTitle: "Mark Complete",
+    image: stretchingImage,
   },
   {
     id: "noSocialMedia",
@@ -24,6 +28,7 @@ export const HABITS_CARD_DATA = [
     title: "No Social Media",
     engagementTime: "2 hrs/day",
     buttonTitle: "Mark Complete",
+    image: noSocialMediaImage,
   },
   {
     id: "meditation",
@@ -31,5 +36,6 @@ export const HABITS_CARD_DATA = [
     title: "Meditation",
     engagementTime: "10 mins/day",
     buttonTitle: "Mark Complete",
+    image: meditationImage,
   },
 ];

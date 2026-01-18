@@ -33,6 +33,7 @@ const Habits = () => {
                         key={stat.id}
                         title={stat.title}
                         value={stat.value}
+                        icon={stat.icon}
                         subtitle={stat.subtitle}
                     />
                 ))}
@@ -44,8 +45,15 @@ const Habits = () => {
                         {...stat}
                         percentage={percentages[stat.id]}
                         buttonAction={() => handleComplete(stat.id)}
+                        buttonTitle={stat.buttonTitle}
+                        engagementTime={stat.engagementTime}
+
                     />
                 ))}
+                <div className='new-habit-card-maker'>
+                    <button className='new-habit-button'><FaPlus /> New Habit</button>
+                    
+                </div>
             </section>
         </div>
     );
