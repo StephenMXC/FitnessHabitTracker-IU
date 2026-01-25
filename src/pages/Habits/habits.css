@@ -1,55 +1,32 @@
-/* icons */
-.streak-icon {
-  font-size: 24px;
-  color: #51c614;
+/* Main page container */
+.main-page-containter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+    gap: 40px;
 }
 
-/* Main Page Container */
-.main-page-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  min-height: 100vh;
-}
-
-/* Header */
-.header {
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  align-items: flex-end;
-}
-
-
-.daily-habits-build-consistency {
-  color: whitesmoke;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.new-habit-button-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-
-
+/* Row: Completion cards */
 .currentstreak-totalhabits-completionrate-cards {
   display: flex;
-  flex-direction: row;
   gap: 20px;
-  margin-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
+  justify-content: flex-start;
+  width: 100%;
+  flex-direction: row;
 }
 
-/* Cards Section */
+/* Row: Habit cards */
+.habit-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Completion / Stats Card */
 .current-streak-card {
   width: 300px;
   background: rgb(90 90 90 / 12%);
@@ -59,139 +36,157 @@
   padding: 1rem;
 }
 
-.card-header {
-  padding: 1px;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  align-items: flex-end;
+.current-streak-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.days-from-last-week,
-.rate-from-last-week {
-  color: #1eff00;
-  font-size: 18px;
+.current-streak-card .logo {
+    font-size: 24px;
+    color: #51c614;
 }
 
-.habits-from-last-week {
-  color: #ffffff;
-  font-size: 18px;
+.current-streak-card h1 {
+    font-size: 24px;
+    color: #51c614;
 }
 
+.current-streak-card p {
+    font-size: 14px;
+    color: #aaa;
+}
+
+/* Habit card container */
 .goals-card {
-  width: 300px;
-  height: 355px;
-  background: rgb(90 90 90 / 12%);
-  background-position: bottom;
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
+    flex: 1 1 250px;
+    max-width: 300px;
+    min-width: 220px;
+    height: 355px;
+    background: rgb(90 90 90 / 12%);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 14px;
+}
+
+/* Card header with dynamic background */
+.card-header {
+    width: 100%;
+    height: 48%;
+    padding: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-radius: 12px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+.new-goals-card {
   border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 20px 20px;
-  margin: 10px;
-}
-
-.reading-card-header {
-  padding: 4px;
+  /* border: aqua; */
+  backdrop-filter: blur(1px);
+  border-radius: 11px;
+  width: 20%;
+  height: 48%;
+  background: rgb(0 26 1);
   display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  align-items: flex-end;
-  width: 269px;
-  height: 150px;
-  border-radius: 12px;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Daily goal badge */
 .daily-goal-container {
-  background: rgba(0, 128, 0, 0.589);
-  width: 120px;
-  height: 50px;
-  border-radius: 12px 12px;
-  padding-left: 5px;
+    width: 120px;
+    height: 50px;
+    border-radius: 12px;
+    background: rgba(0, 128, 0, 0.589);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.daily-goal-container.active {
+    background: rgba(0, 255, 0, 0.7);
 }
 
 .daily-goal {
-  width: 170px;
-  margin-top: 10px;
-  font-size: 21px;
-  color: #00ff15;
+    font-size: 21px;
+    color: #00ff15;
+    margin: 0;
 }
 
+/* Habit body layout */
 .habit-body {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  padding: 4px;
-  gap: 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px;
 }
 
+.habit-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.habit-info h2 {
+    margin: 0;
+    color: whitesmoke;
+}
+
+.engagement-time {
+    font-size: 14px;
+    color: #aaa;
+}
+
+/* Circular progress */
+.progress-circle {
+    width: 46px;
+    height: 46px;
+}
+
+/* Habit footer button */
 .habit-footer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .mark-complete-button {
-  width: 234px;
-  height: 40px;
-  background-color: #70727048;
-  color: rgb(255, 255, 255);
-  border-radius: 40px;
-  border: none;
+    width: 234px;
+    height: 40px;
+    background-color: #70727048;
+    color: white;
+    border-radius: 40px;
+    border: none;
+    transition: transform 0.2s, background-color 0.2s, color 0.2s;
 }
 
-.add-new-habit-button {
-  width: 234px;
-  height: 40px;
-  border-radius: 40px;
-  border: none;
-  align-items: center;
+.mark-complete-button:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    background-color: #09ff00;
+    color: #000;
 }
 
 .new-habit-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 12%;
+  width: 100%;
+  height: 58px;
+  background-color: #70727048;
+  color: white;
+  border-radius: 40px;
+  border: none;
+  transition: transform 0.2s, background-color 0.2s, color 0.2s;
 }
 
-.habit-cards {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  margin-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-
-.stretching-body {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  padding: 4px;
-  gap: 52px;
-}
-
-
-.daily-nosocialmedia-goal-container {
-  background: rgba(0, 128, 0, 0.589);
-  width: 170px;
-  height: 50px;
-  border-radius: 12px 12px;
-  padding-left: 5px;
-}
-
-.percentage-circle {
-  height: 46px;
-  color: rgb(0, 47, 255);
-}
-
-button:hover {
+.new-habit-button:hover {
   cursor: pointer;
   transform: scale(1.05);
-  transition: transform 0.2s;
-  color: rgb(0, 0, 0);
   background-color: #09ff00;
+  color: #000;
 }

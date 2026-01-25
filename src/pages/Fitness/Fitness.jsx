@@ -22,10 +22,6 @@ const Fitness = () => {
 
                     </div>
                     {/* additional motivational quotes in the last section of the header of this div. */}
-                    <div className="motivational-quotes">
-                        <section className='left-one'>Your gateway to a better life.</section>
-                        
-                    </div>
                 </div>
                 {/* the body section of the left div containing input fields and a button */}
                 <div className='left-div-body'>

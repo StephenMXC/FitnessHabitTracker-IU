@@ -9,12 +9,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image:
-    linear-gradient(
-      rgb(19, 85, 19),
-      rgba(2, 78, 2, 0.31)
-    ),
-    url('src/assets/gymImage.png');
+  background-image: linear-gradient(rgb(19 85 19 / 6%), rgb(2 78 2 / 76%)), url(src/assets/gymImage.png);
   display: flex;
   gap: 2rem;
   min-height: 100vh;
@@ -22,11 +17,12 @@
   padding: 3rem;
 }
 
+
 /* Left column (form) */
 .left-div {
   flex: 0 0 480px;
   max-width: 480px;
-  background: rgba(2, 133, 70, 0.567);
+  background: #0e1e08;
   border-radius: 12px;
   padding: 2rem;
   display: flex;
@@ -44,7 +40,7 @@
   align-items: center;
   gap: 0.75rem;
   font-weight: 700;
-  color: #0f1724;
+  color: #fdfeff;
   margin-bottom: 0.5rem;
 }
 
@@ -56,7 +52,7 @@
 .Start-your-journey h1 {
   font-size: 3rem;
   color: #f1f1f1;
-  margin-bottom: 0.25rem;
+  margin-bottom: 3.25rem;
 }
 
 .Start-your-journey p {
@@ -73,17 +69,6 @@
   font-size: 0.9rem;
 }
 
-.left-one {
-  text-align: left;
-  border-width: 1px;
-  padding: 5px;
-  border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.682);
-  padding-right: 8px;
-  padding-bottom: 8px;
-  color: #ffffff;
-  font-weight: bold;
-}
 
 /* Form */
 .left-div-body {
@@ -152,9 +137,9 @@
 
 /* Right column (hero) */
 .right-div {
+  background-color: rgba(2, 6, 23, 0.5);
   flex: 1;
   border-radius: 12px;
-  
   background-size: cover;
   background-position: center;
   color: #fff;

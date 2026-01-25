@@ -1,7 +1,7 @@
 .sidebar {
-  width: 200px;
-  height: 100vh;
-  background-color: #222;
+  width: 14%;
+  height: auto;
+  background-color: #222222b5;
   color: #fff;
   padding: 20px;
 }
@@ -22,5 +22,5 @@
 
 .sidebar-links li.active a {
   font-weight: bold;
-  color: #1e90ff; /* highlight color */
+  color: #00f814;
 }

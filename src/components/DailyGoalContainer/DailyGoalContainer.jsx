@@ -1,5 +1,8 @@
 import { CircularProgressbar } from "react-circular-progressbar";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import 'react-circular-progressbar/dist/styles.css';
+import '../../pages/Habits/habits.css';
+
 
 function DailyGoalContainer({
     dailyGoal,
@@ -12,31 +15,31 @@ function DailyGoalContainer({
     percentage
 }) {
     return (
-
         <div className='goals-card'>
-            <div className='reading-card-header' style={{ backgroundImage: `url('${image}')` }}>
+            <div className='card-header' style={{ backgroundImage: `url(${image})` }}>
                 <div className={`daily-goal-container ${isActive ? 'active' : ''}`}>
                     <h2 className='daily-goal'>{dailyGoal}</h2>
                 </div>
                 <BsThreeDotsVertical className='three-dots' />
             </div>
+
             <div className='habit-body'>
-                <div className='reading-rate'>
+                <div className='habit-info'>
                     <h2>{title}</h2>
-                    <div className='length-of-engagement'>{engagementTime}</div>
+                    <div className='engagement-time'>{engagementTime}</div>
                 </div>
                 <div className='progress-circle'>
-                    <CircularProgressbar className='percentage-circle' value={percentage} text={`${percentage}%`} />
+                    <CircularProgressbar value={percentage} text={`${percentage}%`} />
                 </div>
             </div>
+
             <div className='habit-footer'>
-                <button className='mark-complete-button' onClick={buttonAction}>{buttonTitle}</button>
-
+                <button className='mark-complete-button' onClick={buttonAction}>
+                    {buttonTitle}
+                </button>
             </div>
-
-        </div>);
-
+        </div>
+    );
 }
-
 
 export default DailyGoalContainer;

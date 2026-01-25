@@ -62,7 +62,7 @@ const Habits = () => {
 
                     />
                 ))}
-                <div className='goals-card'>
+                <div className='new-goals-card'>
                     <div className='new-habit-button-container'>
                         <button className='new-habit-button' onClick={() => setShowPopup(true)}><FaPlus /> New Habit</button>
                         {showPopup && popupForm}
