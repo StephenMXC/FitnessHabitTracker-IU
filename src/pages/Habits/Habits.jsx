@@ -11,19 +11,34 @@ import { STATS_CARD_DATA } from './habitsConstant.jsx';
 import { HABITS_CARD_DATA } from './HabitCards.jsx';
 
 const Habits = () => {
-  const [percentages, setPercentages] = useState({
-    reading: 66,
-    stretching: 40,
-    noSocialMedia: 80,
-    meditation: 20,
-  });
+    const [percentages, setPercentages] = useState({
+        reading: 66,
+        stretching: 40,
+        noSocialMedia: 80,
+        meditation: 20,
+    });
+    const [showPopup, setShowPopup] = useState(false);
 
     const handleComplete = (id) => {
         setPercentages(p => ({
-            ...p,
-            [id]: Math.min(p[id] + 10, 100),
+            ...p, // Creating a new object that copies all existing percentages because states are immutable.
+            [id]: Math.min(p[id] + 10, 100), // [id] is the habit name (reading, stretching, etc.) and this line says "take this habit's current percentage and add 10 to it, but do not exceed 100". 
         }));
     };
+
+    // Popup form handler
+    const popupForm = (
+
+        <div className="popup">
+            <form>
+                <input placeholder="Habit Name" />
+                <input placeholder='Commitment Time' />
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    )
+
+
 
     return (
         <div className='main-page-containter'>
@@ -50,9 +65,11 @@ const Habits = () => {
 
                     />
                 ))}
-                <div className='new-habit-card-maker'>
-                    <button className='new-habit-button'><FaPlus /> New Habit</button>
-                    
+                <div className='goals-card'>
+                    <div className='new-habit-button-container'>
+                        <button className='new-habit-button' onClick={() => setShowPopup(true)}><FaPlus /> New Habit</button>
+                        {showPopup && popupForm}
+                    </div>
                 </div>
             </section>
         </div>
@@ -95,7 +112,7 @@ const Habits = () => {
 
 //             {/***************** Habit Cards ******************/}
 
-            
+
 
 //                 <section className='habit-cards'>
 //                     {HABITS_CARD_DATA.map(stat => (
