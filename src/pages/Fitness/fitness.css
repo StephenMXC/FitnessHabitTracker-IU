@@ -4,12 +4,17 @@
   box-sizing: border-box;
 }
 
-
 /* Page layout */
 .fitness-page {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-image:
+    linear-gradient(
+      rgb(19, 85, 19),
+      rgba(2, 78, 2, 0.31)
+    ),
+    url('src/assets/gymImage.png');
   display: flex;
   gap: 2rem;
   min-height: 100vh;

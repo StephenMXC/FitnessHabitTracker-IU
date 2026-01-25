@@ -8,6 +8,7 @@ import meditationImage from '../../assets/Meditate.jpg';
 export const HABITS_CARD_DATA = [
   {
     id: "reading",
+    isActive: true,
     dailyGoal: "Daily Goal",
     title: "Reading",
     engagementTime: "30 mins/day",
@@ -16,7 +17,8 @@ export const HABITS_CARD_DATA = [
   },
   {
     id: "stretching",
-    dailyGoal: "Daily Goal",
+    isActive: true,
+    dailyGoal: "Completed",
     title: "Stretching",
     engagementTime: "15 mins/day",
     buttonTitle: "Mark Complete",
@@ -24,6 +26,7 @@ export const HABITS_CARD_DATA = [
   },
   {
     id: "noSocialMedia",
+    isActive: false,
     dailyGoal: "Daily Goal",
     title: "No Social Media",
     engagementTime: "2 hrs/day",
@@ -32,6 +35,7 @@ export const HABITS_CARD_DATA = [
   },
   {
     id: "meditation",
+    isActive: false,
     dailyGoal: "Daily Goal",
     title: "Meditation",
     engagementTime: "10 mins/day",

@@ -134,9 +134,8 @@
 .mark-complete-button {
   width: 234px;
   height: 40px;
-  background-color: #00b809;
-  background: blur(10px);
-  color: rgb(0, 0, 0);
+  background-color: #70727048;
+  color: rgb(255, 255, 255);
   border-radius: 40px;
   border: none;
 }
@@ -144,8 +143,6 @@
 .add-new-habit-button {
   width: 234px;
   height: 40px;
-  background-color: #ffffff24;
-  color: rgb(84 255 0);
   border-radius: 40px;
   border: none;
   align-items: center;
@@ -168,17 +165,6 @@
   padding-right: 20px;
 }
 
-.stretching-card-header {
-  background-image: url('../../assets/stretchingStonk.jpg');
-  padding: 4px;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  align-items: flex-end;
-  width: 269px;
-  height: 150px;
-  border-radius: 12px;
-}
 
 .stretching-body {
   display: flex;
@@ -188,17 +174,6 @@
   gap: 52px;
 }
 
-.no-social-media-card-header {
-  background-image: url('../../assets/noSocialMedia.jpg');
-  padding: 4px;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  align-items: flex-end;
-  width: 269px;
-  height: 150px;
-  border-radius: 12px;
-}
 
 .daily-nosocialmedia-goal-container {
   background: rgba(0, 128, 0, 0.589);
@@ -207,20 +182,6 @@
   border-radius: 12px 12px;
   padding-left: 5px;
 }
-
-.meditation-card-header {
-  background-image: url('../../assets/Meditate.jpg');
-  padding: 4px;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  align-items: flex-end;
-  width: 269px;
-  height: 150px;
-  border-radius: 12px;
-}
-
-
 
 .percentage-circle {
   height: 46px;
@@ -231,5 +192,6 @@ button:hover {
   cursor: pointer;
   transform: scale(1.05);
   transition: transform 0.2s;
-  color: rgb(255, 255, 0)
+  color: rgb(0, 0, 0);
+  background-color: #09ff00;
 }

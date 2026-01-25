@@ -14,24 +14,13 @@ a {
 a:hover {
   color: #535bf2;
 }
-
 body {
-  min-height: 100vh;
   margin: 0;
-
-  background-image:
-    linear-gradient(
-      rgb(19, 85, 19),
-      rgba(2, 78, 2, 0.31)
-    ),
-    url('./assets/gymImage.png');
-
-  background-size: cover;
-  background-position: center;
-  
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  background-color: #001a01;
+  color: #e4e4e4;
 }
-
-
 
 button {
   color: black;
@@ -39,7 +28,7 @@ button {
   border: 1px solid transparent;
   padding: 1px 16px;
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 500;
   background-color: #0fa904;
   font-family: inherit;
   cursor: pointer;
