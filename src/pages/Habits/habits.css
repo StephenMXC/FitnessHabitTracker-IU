@@ -22,10 +22,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
 }
-
 /* Completion / Stats Card */
 .current-streak-card {
   width: 300px;
