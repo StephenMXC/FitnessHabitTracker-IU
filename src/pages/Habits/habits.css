@@ -1,11 +1,11 @@
 /* Main page container */
 .main-page-containter {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    min-height: 100vh;
-    gap: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  min-height: 100vh;
+  gap: 40px;
 }
 
 /* Row: Completion cards */
@@ -19,11 +19,11 @@
 
 /* Row: Habit cards */
 .habit-cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
 }
 
 /* Completion / Stats Card */
@@ -37,141 +37,152 @@
 }
 
 .current-streak-card .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .current-streak-card .logo {
-    font-size: 24px;
-    color: #51c614;
+  font-size: 24px;
+  color: #51c614;
 }
 
 .current-streak-card h1 {
-    font-size: 24px;
-    color: #51c614;
+  font-size: 24px;
+  color: #51c614;
 }
 
 .current-streak-card p {
-    font-size: 14px;
-    color: #aaa;
+  font-size: 14px;
+  color: #aaa;
 }
 
 /* Habit card container */
 .goals-card {
-    flex: 1 1 250px;
-    max-width: 300px;
-    min-width: 220px;
-    height: 355px;
-    background: rgb(90 90 90 / 12%);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 14px;
+  flex: 1 1 250px;
+  max-width: 300px;
+  min-width: 220px;
+  height: 355px;
+  background: rgb(90 90 90 / 12%);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
 }
 
 /* Card header with dynamic background */
 .card-header {
-    width: 100%;
-    height: 48%;
-    padding: 4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    border-radius: 12px;
-    background-size: cover;
-    background-position: center;
-    position: relative;
+  width: 100%;
+  height: 48%;
+  padding: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
 }
-.new-goals-card {
+
+/* .new-goals-card {
   border: 1px solid rgba(255, 255, 255, 0.3);
-  /* border: aqua; */
   backdrop-filter: blur(1px);
   border-radius: 11px;
-  width: 20%;
-  height: 48%;
+  width: 26%;
+  height: 66%;
   background: rgb(0 26 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+.new-goals-card {
+  flex: 1 1 250px;
+  max-width: 300px;
+  min-width: 220px;
+  height: 355px;
+  background: rgb(90 90 90 / 12%);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 14px;
+}
+
+/* Daily goal badge */
+.daily-goal-container.active {
+  width: 58%;
+  height: 50px;
+  border-radius: 12px;
+  background: rgb(0 128 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.daily-goal.active {
+  font-size: 21px;
+  color: #00ff15;
+  margin: 0;
+}
+
+/* Habit body layout */
+.habit-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px;
+}
+
+.habit-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.habit-info h2 {
+  margin: 0;
+  color: whitesmoke;
+}
+
+.engagement-time {
+  font-size: 14px;
+  color: #aaa;
+}
+
+/* Circular progress */
+.progress-circle {
+  width: 46px;
+  height: 46px;
+}
+
+/* Habit footer button */
+.habit-footer {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Daily goal badge */
-.daily-goal-container {
-    width: 120px;
-    height: 50px;
-    border-radius: 12px;
-    background: rgba(0, 128, 0, 0.589);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.daily-goal-container.active {
-    background: rgba(0, 255, 0, 0.7);
-}
-
-.daily-goal {
-    font-size: 21px;
-    color: #00ff15;
-    margin: 0;
-}
-
-/* Habit body layout */
-.habit-body {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 4px;
-}
-
-.habit-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.habit-info h2 {
-    margin: 0;
-    color: whitesmoke;
-}
-
-.engagement-time {
-    font-size: 14px;
-    color: #aaa;
-}
-
-/* Circular progress */
-.progress-circle {
-    width: 46px;
-    height: 46px;
-}
-
-/* Habit footer button */
-.habit-footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .mark-complete-button {
-    width: 234px;
-    height: 40px;
-    background-color: #70727048;
-    color: white;
-    border-radius: 40px;
-    border: none;
-    transition: transform 0.2s, background-color 0.2s, color 0.2s;
+  width: 234px;
+  height: 40px;
+  background-color: #70727048;
+  color: white;
+  border-radius: 40px;
+  border: none;
+  transition: transform 0.2s, background-color 0.2s, color 0.2s;
 }
 
 .mark-complete-button:hover {
-    cursor: pointer;
-    transform: scale(1.05);
-    background-color: #09ff00;
-    color: #000;
+  cursor: pointer;
+  transform: scale(1.05);
+  background-color: #09ff00;
+  color: #000;
 }
 
 .new-habit-button {

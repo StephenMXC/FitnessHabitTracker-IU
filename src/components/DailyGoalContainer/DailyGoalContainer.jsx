@@ -18,7 +18,7 @@ function DailyGoalContainer({
         <div className='goals-card'>
             <div className='card-header' style={{ backgroundImage: `url(${image})` }}>
                 <div className={`daily-goal-container ${isActive ? 'active' : ''}`}>
-                    <h2 className='daily-goal'>{dailyGoal}</h2>
+                    <h2 className='daily-goal'>{isActive ? dailyGoal : null}</h2>
                 </div>
                 <BsThreeDotsVertical className='three-dots' />
             </div>

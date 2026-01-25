@@ -22,18 +22,32 @@ const Habits = () => {
             [id]: Math.min(p[id] + 10, 100), // [id] is the habit name (reading, stretching, etc.) and this line says "take this habit's current percentage and add 10 to it, but do not exceed 100". 
         }));
     };
+    const newHabitCard = () => {
+        // Logic to add a new habit card
+    };
 
     // Popup form handler
     const popupForm = (
-
         <div className="popup">
             <form>
                 <input placeholder="Habit Name" />
-                <input placeholder='Commitment Time' />
-                <button type="submit">Submit</button>
+
+                <select name="commitmentTime" defaultValue="">
+                    <option value="" disabled>
+                        Commitment time
+                    </option>
+                    <option value="15">15 mins/day</option>
+                    <option value="30">30 mins/day</option>
+                    <option value="60">1 hour/day</option>
+                    <option value="120">2 hours/day</option>
+                    <option value="180">3 hours/day</option>
+                </select>
+
+                <button type="submit" onClick={newHabitCard()}>Submit</button>
             </form>
         </div>
-    )
+    );
+
 
 
 
