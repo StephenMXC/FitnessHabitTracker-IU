@@ -1,0 +1,337 @@
+/* Modal Overlay */
+.create-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Modal Content */
+.create-modal-content {
+    background: linear-gradient(135deg, #0400ff 0%, #00cc00 100%);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    max-width: 600px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 30px;
+    position: relative;
+    animation: slideUp 0.3s ease-in-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Close Button */
+.create-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    z-index: 1001;
+    transition: color 0.3s ease;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.create-modal-close:hover {
+    color: #000;
+}
+
+/* Title */
+.create-modal-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0 0 30px 0;
+    color: #ffffff;
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Form Input */
+.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-input::placeholder {
+    color: #999;
+}
+
+/* Photo Grid */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 15px;
+}
+
+.photo-option {
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 3px solid black;
+    transition: all 0.3s ease;
+    aspect-ratio: 1;
+}
+
+.photo-option img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.photo-option.selected {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.photo-option:hover img {
+    transform: scale(1.05);
+}
+
+.photo-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    color: white;
+    padding: 8px 5px 5px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Photo Upload Option */
+.photo-upload-option {
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 3px dashed #667eea;
+    transition: all 0.3s ease;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+}
+
+.photo-upload-option.selected {
+    border-color: #667eea;
+    border-style: solid;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.photo-upload-option:hover {
+    background-color: #efefef;
+}
+
+.upload-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.upload-icon {
+    font-size: 28px;
+}
+
+.upload-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #667eea;
+    text-align: center;
+    padding: 0 5px;
+}
+
+/* Uploaded Preview */
+.uploaded-preview {
+    margin-top: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #667eea;
+    max-width: 200px;
+}
+
+/* Form Select */
+.form-select {
+    color:rgb(0, 0, 0);
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Create Button */
+.create-habit-button {
+    width: 100%;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    margin-top: 20px;
+}
+
+.create-habit-button:hover {
+    background: linear-gradient(135deg, #1900ff 0%, #00ff1e 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.create-habit-button:active {
+    transform: translateY(0);
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.form-actions .create-habit-button {
+    flex: 1;
+    margin: 0;
+}
+
+.cancel-button {
+    flex: 1;
+    padding: 14px 20px;
+    background-color: #f0f0f0;
+    color: #666;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancel-button:hover {
+    background-color: #e8e8e8;
+    color: #333;
+}
+
+.cancel-button:active {
+    transform: translateY(0);
+}
+
+/* Scrollbar Styling */
+.create-modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.create-modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.create-modal-content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.create-modal-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .create-modal-content {
+        width: 95%;
+        max-height: 90vh;
+        padding: 20px;
+    }
+
+    .create-modal-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .photo-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+}
