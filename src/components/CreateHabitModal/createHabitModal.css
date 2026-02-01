@@ -25,10 +25,10 @@
 
 /* Modal Content */
 .create-modal-content {
-    background: #062d06;
-    border: #34c707 20px solid;
+    background: #001a01;
+    border: #34c707 1px solid;
     border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 30px -10px #34c707;
     max-width: 600px;
     width: 90%;
     max-height: 85vh;

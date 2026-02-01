@@ -11,19 +11,53 @@ import { HABITS_CARD_DATA } from './HabitCards.jsx';
 
 const Habits = () => {
     const [percentages, setPercentages] = useState({
-        reading: 66,
-        stretching: 40,
-        noSocialMedia: 80,
-        meditation: 20,
+        reading: 0,
+        stretching: 0,
+        noSocialMedia: 0,
+        meditation: 0,
     });
+
     const [habitsList, setHabitsList] = useState(HABITS_CARD_DATA);
     const [showCreateModal, setShowCreateModal] = useState(false);
 
+    //  streak state (auto-resets on reload for demo purposes)
+    const [streak, setStreak] = useState(0);
+    const [lastStreakTimestamp, setLastStreakTimestamp] = useState(null);
+
     const handleComplete = (id) => {
+        const now = Date.now();
+
+        // existing percentage logic
         setPercentages(p => ({
             ...p,
-            [id]: Math.min(p[id] + 10, 100),
+            [id]: Math.min((p[id] ?? 0) + 10, 100),
         }));
+
+        // streak logic
+        setStreak(prevStreak => {
+            if (!lastStreakTimestamp) {
+                setLastStreakTimestamp(now);
+                return 1;
+            }
+
+            const hoursSinceLast =
+                (now - lastStreakTimestamp) / (1000 * 60 * 60);
+
+            if (hoursSinceLast <= 24) {
+                // already counted for this window
+                return prevStreak;
+            }
+
+            if (hoursSinceLast <= 48) {
+                // next valid day
+                setLastStreakTimestamp(now);
+                return prevStreak + 1;
+            }
+
+            // missed a full day → reset
+            setLastStreakTimestamp(now);
+            return 1;
+        });
     };
 
     const handleCreateHabit = (newHabit) => {
@@ -38,29 +72,12 @@ const Habits = () => {
     let HabitCards = habitsList.length;
 
     const completionRates = () => {
+        if (habitsList.length === 0) return 0;
         const habits = habitsList.map(habit => percentages[habit.id] || 0);
-        const completionRate = habits.reduce((sum, value) => sum + value, 0) / habits.length;
-
+        const completionRate =
+            habits.reduce((sum, value) => sum + value, 0) / habits.length;
         return Math.round(completionRate);
-    }
-
-    // below will be code for tracking the streaks of the habits. If the user, within 24 hours, marks a habit as complete, the streak increases by 1. If they miss a day, the streak resets to 0.
-
-    const currentStreak = () => {
-        const currentDate = new Date();
-        let streak = 0;
-        habitsList.forEach(habit => {
-            const lastCompletedDate = new Date(habit.lastCompleted);
-            const timeDiff = currentDate - lastCompletedDate;
-            const daysDiff = timeDiff / (1000 * 3600 * 24);
-
-            if (daysDiff <= 1) {
-                streak += 1;
-            }
-        });
-        return streak;
-    }
-
+    };
 
     return (
         <div className='main-page-containter'>
@@ -69,16 +86,21 @@ const Habits = () => {
                     <StatCard
                         key={stat.id}
                         title={stat.title}
-                        // here's what this does explicitly: 
-                        // If HabitCards has a truthy value (i.e., there are habits in the list) and the stat.id is "habits",
-                        // it uses the length of the habitsList (converted to a string) as the value. 
-                        // Otherwise, it falls back to the original stat.value from STATS_CARD_DATA.
-                        value={stat.id === "habits" ? String(HabitCards) : stat.id === "rate" ? completionRates(habitsList) + "%" : stat.id === "streak" ? currentStreak() + " Days" : stat.value}
+                        value={
+                            stat.id === "habits"
+                                ? String(HabitCards)
+                                : stat.id === "rate"
+                                ? completionRates() + "%"
+                                : stat.id === "streak"
+                                ? streak + " Days"
+                                : stat.value
+                        }
                         icon={stat.icon}
                         subtitle={stat.subtitle}
                     />
                 ))}
             </section>
+
             <section className='habit-cards'>
                 {habitsList.map(stat => (
                     <DailyGoalContainer
@@ -90,15 +112,22 @@ const Habits = () => {
                         engagementTime={stat.engagementTime}
                     />
                 ))}
+
                 <div className='new-goals-card'>
                     <div className='new-habit-button-container'>
-                        <button className='new-habit-button' onClick={() => setShowCreateModal(true)}><FaPlus /> New Habit</button>
+                        <button
+                            className='new-habit-button'
+                            onClick={() => setShowCreateModal(true)}
+                        >
+                            <FaPlus /> New Habit
+                        </button>
                     </div>
                 </div>
             </section>
+
             <CreateHabitModal
-                isOpen={showCreateModal} // this is where isOpen is defined as a thing that checks the showCreateModal state.
-                onClose={() => setShowCreateModal(false)} //this is where onClose is defined as a thing that runs a function to set the showCreateModal to false.
+                isOpen={showCreateModal}
+                onClose={() => setShowCreateModal(false)}
                 title="Create New Habit"
             >
                 <CreateHabitForm
@@ -110,8 +139,4 @@ const Habits = () => {
     );
 };
 
-
 export default Habits;
-
-
-
