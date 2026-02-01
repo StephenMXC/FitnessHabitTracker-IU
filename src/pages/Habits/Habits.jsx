@@ -35,7 +35,31 @@ const Habits = () => {
         setShowCreateModal(false);
     };
 
+    let HabitCards = habitsList.length;
 
+    const completionRates = () => {
+        const habits = habitsList.map(habit => percentages[habit.id] || 0);
+        const completionRate = habits.reduce((sum, value) => sum + value, 0) / habits.length;
+
+        return Math.round(completionRate);
+    }
+
+    // below will be code for tracking the streaks of the habits. If the user, within 24 hours, marks a habit as complete, the streak increases by 1. If they miss a day, the streak resets to 0.
+
+    const currentStreak = () => {
+        const currentDate = new Date();
+        let streak = 0;
+        habitsList.forEach(habit => {
+            const lastCompletedDate = new Date(habit.lastCompleted);
+            const timeDiff = currentDate - lastCompletedDate;
+            const daysDiff = timeDiff / (1000 * 3600 * 24);
+
+            if (daysDiff <= 1) {
+                streak += 1;
+            }
+        });
+        return streak;
+    }
 
 
     return (
@@ -45,7 +69,11 @@ const Habits = () => {
                     <StatCard
                         key={stat.id}
                         title={stat.title}
-                        value={stat.value}
+                        // here's what this does explicitly: 
+                        // If HabitCards has a truthy value (i.e., there are habits in the list) and the stat.id is "habits",
+                        // it uses the length of the habitsList (converted to a string) as the value. 
+                        // Otherwise, it falls back to the original stat.value from STATS_CARD_DATA.
+                        value={stat.id === "habits" ? String(HabitCards) : stat.id === "rate" ? completionRates(habitsList) + "%" : stat.id === "streak" ? currentStreak() + " Days" : stat.value}
                         icon={stat.icon}
                         subtitle={stat.subtitle}
                     />
@@ -68,12 +96,12 @@ const Habits = () => {
                     </div>
                 </div>
             </section>
-            <CreateHabitModal 
+            <CreateHabitModal
                 isOpen={showCreateModal} // this is where isOpen is defined as a thing that checks the showCreateModal state.
                 onClose={() => setShowCreateModal(false)} //this is where onClose is defined as a thing that runs a function to set the showCreateModal to false.
                 title="Create New Habit"
             >
-                <CreateHabitForm 
+                <CreateHabitForm
                     onCreateHabit={handleCreateHabit}
                     onCancel={() => setShowCreateModal(false)}
                 />

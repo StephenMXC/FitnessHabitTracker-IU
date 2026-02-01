@@ -21,7 +21,7 @@ export const STATS_CARD_DATA = [
     id: "habits",
     title: "Total Habits",
     icon: <CiViewList className="streak-icon" />,
-    value: "12",
+    value: "4",
     subtitle: (
       <span className="habits-from-last-week">
         No change

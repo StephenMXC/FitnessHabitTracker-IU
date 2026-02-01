@@ -17,6 +17,7 @@
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -24,7 +25,8 @@
 
 /* Modal Content */
 .create-modal-content {
-    background: linear-gradient(135deg, #0400ff 0%, #00cc00 100%);
+    background: #062d06;
+    border: #34c707 20px solid;
     border-radius: 12px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     max-width: 600px;
@@ -41,6 +43,7 @@
         transform: translateY(50px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -215,7 +218,7 @@
 
 /* Form Select */
 .form-select {
-    color:rgb(0, 0, 0);
+    color: rgb(0, 0, 0);
     width: 100%;
     padding: 12px 15px;
     border: 2px solid #e0e0e0;

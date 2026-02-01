@@ -5,6 +5,7 @@ import meditationImage from '../../assets/Meditate.jpg';
 
 
 
+
 export const HABITS_CARD_DATA = [
   {
     id: "reading",
