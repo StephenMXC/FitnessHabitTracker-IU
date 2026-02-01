@@ -69,8 +69,8 @@ const Habits = () => {
                 </div>
             </section>
             <CreateHabitModal 
-                isOpen={showCreateModal}
-                onClose={() => setShowCreateModal(false)}
+                isOpen={showCreateModal} // this is where isOpen is defined as a thing that checks the showCreateModal state.
+                onClose={() => setShowCreateModal(false)} //this is where onClose is defined as a thing that runs a function to set the showCreateModal to false.
                 title="Create New Habit"
             >
                 <CreateHabitForm 

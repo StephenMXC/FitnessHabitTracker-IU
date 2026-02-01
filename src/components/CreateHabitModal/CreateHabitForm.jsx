@@ -11,7 +11,7 @@ const AVAILABLE_IMAGES = [
     { id: 'noSocialMedia', name: 'No Social Media', image: noSocialMediaImage },
     { id: 'meditation', name: 'Meditation', image: meditationImage },
     { id: 'gym', name: 'Gym', image: gymImage },
-];
+]; // this is to be handled eventually by a backend or cloud storage solution. same thing for the ones below.
 
 const COMMITMENT_TIMES = [
     { value: '15', label: '15 mins/day' },
