@@ -8,6 +8,8 @@ import CreateHabitForm from '../../components/CreateHabitModal/CreateHabitForm.j
 import StatCard from '../../components/StatCard/StatCard.jsx';
 import { STATS_CARD_DATA } from './habitsConstant.jsx';
 import { HABITS_CARD_DATA } from './HabitCards.jsx';
+import { CurrentHabitModal } from '../../components/CurrentHabitModal/CurrentHabitModal.jsx';
+import { CurrentHabitForm } from '../../components/CurrentHabitModal/CurrentHabitForm.jsx';
 
 const Habits = () => {
     const [percentages, setPercentages] = useState({
@@ -19,10 +21,52 @@ const Habits = () => {
 
     const [habitsList, setHabitsList] = useState(HABITS_CARD_DATA);
     const [showCreateModal, setShowCreateModal] = useState(false);
+    const [showCurrentHabitModal, setShowCurrentHabitModal] = useState(false);
+    
 
     //  streak state (auto-resets on reload for demo purposes)
     const [streak, setStreak] = useState(0);
     const [lastStreakTimestamp, setLastStreakTimestamp] = useState(null);
+    const [currentHabit, setCurrentHabit] = useState(null);
+    const [formData, setFormData] = useState({
+        title: '',
+        image: '',
+        completionRate: 0,
+    });
+    const [completionRateChanged, setCompletionRateChanged] = useState(false);
+
+
+    const handleUpdateHabit = (updatedHabit) => {
+        setHabitsList(prevList =>
+            prevList.map(habit =>
+                habit.id === currentHabit.id ? { ...habit, ...updatedHabit } : habit
+            )
+        );
+        setShowCurrentHabitModal(false);
+    };
+    const handleDeleteHabit = (habitId) => {
+        setHabitsList(prevList => prevList.filter(habit => habit.id !== habitId));
+        setShowCurrentHabitModal(false);
+    };
+    const inputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevData => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
+
+    const completionRateChange = (e) => {
+        const value = e.target.value;
+        setFormData(prevData => ({
+            ...prevData,
+            completionRate: value,
+        }));
+        setCompletionRateChanged(true);
+    };
+    const keepCompletionRate = () => {
+        setCompletionRateChanged(false);
+    };
 
     const handleComplete = (id) => {
         const now = Date.now();
@@ -108,6 +152,10 @@ const Habits = () => {
                         {...stat}
                         percentage={percentages[stat.id]}
                         buttonAction={() => handleComplete(stat.id)}
+                        modalAction={() => {
+                            setCurrentHabit(stat);
+                            setShowCurrentHabitModal(true);
+                        }}
                         buttonTitle={stat.buttonTitle}
                         engagementTime={stat.engagementTime}
                     />
@@ -135,6 +183,23 @@ const Habits = () => {
                     onCancel={() => setShowCreateModal(false)}
                 />
             </CreateHabitModal>
+
+            <CurrentHabitModal
+                isOpen={showCurrentHabitModal}
+                onClose={() => setShowCurrentHabitModal(false)}
+                habit={currentHabit}
+                onSave={handleUpdateHabit}
+                onDelete={handleDeleteHabit}
+            >
+                <CurrentHabitForm
+                    formData={formData}
+                    onInputChange={inputChange}
+                    onCompletionRateChange={completionRateChange}
+                    completionRateChanged={completionRateChanged}
+                    onKeepCompletionRate={keepCompletionRate}
+                />
+            </CurrentHabitModal>
+                    
         </div>
     );
 };

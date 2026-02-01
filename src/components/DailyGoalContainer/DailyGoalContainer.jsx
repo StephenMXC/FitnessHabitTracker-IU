@@ -12,7 +12,7 @@ function DailyGoalContainer({
     buttonTitle,
     image,
     buttonAction,
-    deleteAction,
+    modalAction,
     percentage
 }) {
     return (
@@ -21,7 +21,7 @@ function DailyGoalContainer({
                 <div className={`daily-goal-container ${isActive ? 'active' : ''}`}>
                     <h2 className='daily-goal'>{isActive ? dailyGoal : null}</h2>
                 </div>
-                <BsThreeDotsVertical className='three-dots' onClick={deleteAction} />
+                <BsThreeDotsVertical className='three-dots' onClick={modalAction} />
             </div>
 
             <div className='habit-body'>
