@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CurrentHabitForm } from './CurrentHabitForm';
 import './currentHabitModal.css';
 
@@ -10,6 +10,17 @@ export const CurrentHabitModal = ({ habit, isOpen, onClose, onSave, onDelete }) 
     });
 
     const [completionRateChanged, setCompletionRateChanged] = useState(false);
+
+    useEffect(() => {
+        if (habit) {
+            setFormData({
+                title: habit.title || '',
+                image: habit.image || '',
+                completionRate: habit.completionRate || 0,
+            });
+            setCompletionRateChanged(false);
+        }
+    }, [habit]);
 
     if (!isOpen) return null;
 
