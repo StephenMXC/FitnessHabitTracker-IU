@@ -139,8 +139,6 @@ const Habits = () => {
                                 ? streak + " Days"
                                 : stat.value
                         }
-                        icon={stat.icon}
-                        subtitle={stat.subtitle}
                     />
                 ))}
             </section>

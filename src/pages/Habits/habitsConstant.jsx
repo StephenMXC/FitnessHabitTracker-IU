@@ -11,33 +11,18 @@ export const STATS_CARD_DATA = [
     title: "Current Streak",
     value: "12 Days",
     icon: <MdLocalFireDepartment className="streak-icon" />,
-    subtitle: (
-      <span className="days-from-last-week">
-        <FaPlus /> 2 days from last week
-      </span>
-    ),
   },
   {
     id: "habits",
     title: "Total Habits",
     icon: <CiViewList className="streak-icon" />,
     value: "4",
-    subtitle: (
-      <span className="habits-from-last-week">
-        No change
-      </span>
-    ),
   },
   {
     id: "rate",
     title: "Completion Rate",
     value: "85%",
     icon: <MdPieChart className="streak-icon" />,
-    subtitle: (
-      <span className="rate-from-last-week">
-        <FaPlus /> 5% improvement
-      </span>
-    ),
   },
 ];
 

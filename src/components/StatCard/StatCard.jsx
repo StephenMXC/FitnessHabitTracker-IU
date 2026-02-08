@@ -7,7 +7,6 @@ function StatCard({ title, value, subtitle, icon }) {
       </div>
       <div>
         <h1>{value}</h1>
-        <p>{subtitle}</p>
       </div>
     </div>
   );
