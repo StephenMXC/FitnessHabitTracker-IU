@@ -19,6 +19,10 @@ export const CurrentHabitModal = ({
 
     const [completionRateChanged, setCompletionRateChanged] = useState(false);
 
+    const handleCommitmentLevel = (level) => {
+        setCommitmentLevel(level);
+    }
+
     useEffect(() => {
         if (habit) {
             setFormData({
@@ -84,6 +88,7 @@ export const CurrentHabitModal = ({
                         onCompletionRateChange={handleCompletionRateChange}
                         completionRateChanged={completionRateChanged}
                         onKeepCompletionRate={handleKeepCompletionRate}
+                        commitmentLevel={handleCommitmentLevel}
                     />
 
                     <div className="modal-actions">
