@@ -37,13 +37,25 @@ const Habits = () => {
 
 
     const handleUpdateHabit = (updatedHabit) => {
+        const rate = Number(updatedHabit.completionRate);
+
         setHabitsList(prevList =>
             prevList.map(habit =>
-                habit.id === currentHabit.id ? { ...habit, ...updatedHabit } : habit
+                habit.id === currentHabit.id
+                    ? { ...habit, ...updatedHabit, completionRate: rate }
+                    : habit
             )
         );
+
+        setPercentages(prev => ({
+            ...prev,
+            [currentHabit.id]: rate,
+        }));
+
         setShowCurrentHabitModal(false);
     };
+
+
     const handleDeleteHabit = (habitId) => {
         setHabitsList(prevList => prevList.filter(habit => habit.id !== habitId));
         setShowCurrentHabitModal(false);
@@ -186,9 +198,11 @@ const Habits = () => {
                 isOpen={showCurrentHabitModal}
                 onClose={() => setShowCurrentHabitModal(false)}
                 habit={currentHabit}
+                currentPercentage={percentages[currentHabit?.id] ?? 0}
                 onSave={handleUpdateHabit}
                 onDelete={handleDeleteHabit}
             >
+
                 <CurrentHabitForm
                     formData={formData}
                     onInputChange={inputChange}

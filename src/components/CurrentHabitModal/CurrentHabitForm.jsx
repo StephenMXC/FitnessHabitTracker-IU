@@ -36,32 +36,34 @@ export const CurrentHabitForm = ({ formData, onInputChange, onCompletionRateChan
                 )}
             </div>
 
-            <div className="form-section">
-                <label htmlFor="completionRate" className="form-label">
-                    Completion Rate: <span className="completion-rate-value">{formData.completionRate}%</span>
-                </label>
-                <input
-                    type="range"
-                    id="completionRate"
-                    name="completionRate"
-                    min="0"
-                    max="100"
-                    value={formData.completionRate}
-                    onChange={onCompletionRateChange}
-                    className="form-range"
-                />
-                {completionRateChanged && (
-                    <div className="completion-actions">
-                        <button 
-                            type="button"
-                            onClick={onKeepCompletionRate} 
-                            className="btn-secondary"
-                        >
-                            Keep Current
-                        </button>
-                        <span className="info-text">New value: {formData.completionRate}%</span>
-                    </div>
-                )}
+            <div className="footer-form-section">
+                <div className="form-section">
+                    <label htmlFor="completionRate" className="form-label">
+                        Completion Rate: <span className="completion-rate-value">{formData.completionRate}%</span>
+                    </label>
+                    <input
+                        type="range"
+                        id="completionRate"
+                        name="completionRate"
+                        min="0"
+                        max="100"
+                        value={formData.completionRate}
+                        onChange={onCompletionRateChange}
+                        className="form-range"
+                    />
+                    {completionRateChanged && (
+                        <div className="completion-actions">
+                            <button
+                                type="button"
+                                onClick={onKeepCompletionRate}
+                                className="btn-secondary"
+                            >
+                                Keep Current
+                            </button>
+                            <span className="info-text">New value: {formData.completionRate}%</span>
+                        </div>
+                    )}
+                </div>
             </div>
         </form>
     );

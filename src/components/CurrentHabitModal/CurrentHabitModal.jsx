@@ -2,11 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { CurrentHabitForm } from './CurrentHabitForm';
 import './currentHabitModal.css';
 
-export const CurrentHabitModal = ({ habit, isOpen, onClose, onSave, onDelete }) => {
+export const CurrentHabitModal = ({
+    habit,
+    currentPercentage,
+    isOpen,
+    onClose,
+    onSave,
+    onDelete
+}) => {
+
     const [formData, setFormData] = useState({
         title: habit?.title || '',
         image: habit?.image || '',
-        completionRate: habit?.completionRate || 0,
+        completionRate: Number(habit?.completionRate) || 0,
     });
 
     const [completionRateChanged, setCompletionRateChanged] = useState(false);
@@ -30,9 +38,13 @@ export const CurrentHabitModal = ({ habit, isOpen, onClose, onSave, onDelete }) 
     };
 
     const handleCompletionRateChange = (e) => {
-        setFormData(prev => ({ ...prev, completionRate: e.target.value }));
+        setFormData(prev => ({
+            ...prev,
+            completionRate: Number(e.target.value),
+        }));
         setCompletionRateChanged(true);
     };
+
 
     const handleSave = () => {
         onSave(formData);
@@ -52,10 +64,11 @@ export const CurrentHabitModal = ({ habit, isOpen, onClose, onSave, onDelete }) 
     const handleKeepCompletionRate = () => {
         setFormData(prev => ({
             ...prev,
-            completionRate: habit?.completionRate || 0,
+            completionRate: Number(currentPercentage),
         }));
         setCompletionRateChanged(false);
     };
+
 
     return (
         <div className="modal-overlay">

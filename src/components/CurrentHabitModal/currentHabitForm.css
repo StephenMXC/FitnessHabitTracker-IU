@@ -12,6 +12,13 @@
     gap: 10px;
 }
 
+.footer-form-section {
+    height: 124px;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
 /* Form Label */
 .current-habit-form-label {
     font-weight: 600;
@@ -104,7 +111,7 @@
 }
 
 .image-preview {
-    width: 100%;
+    width: 52%;
     height: 100%;
     object-fit: cover;
     border-radius: 8px;
