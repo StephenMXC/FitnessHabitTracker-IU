@@ -24,7 +24,7 @@
 
 /* Modal Content */
 .modal-content {
-    background: white;
+    background: #001a01;
     border-radius: 12px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     max-width: 500px;
@@ -84,7 +84,17 @@
 
 /* Modal Body */
 .modal-body {
-    padding: 30px 25px;
+    background: #001a01;
+    border: #34c707 1px solid;
+    border-radius: 12px;
+    box-shadow: 0 0 30px -10px #34c707;
+    max-width: 600px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 30px;
+    position: relative;
+    animation: slideUp 0.3s ease-in-out;
 }
 
 .modal-title {

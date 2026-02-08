@@ -138,6 +138,22 @@
   padding: 4px;
 }
 
+.three-dots-container {
+  height: 26%;
+  border-radius: 8px;
+  display: flex;
+  background-color: rgb(0, 26, 1);
+  font-size: 26px;
+  color: #51ff00;
+  align-items: center;
+}
+
+.three-dots-container:hover {
+  cursor: pointer;
+  background-color: rgb(0, 128, 0);
+  transform: scale(1.05);
+}
+
 .habit-info {
   display: flex;
   flex-direction: column;

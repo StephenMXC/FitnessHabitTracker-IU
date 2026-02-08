@@ -4,6 +4,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import '../../pages/Habits/habits.css';
 
 
+
 function DailyGoalContainer({
     dailyGoal,
     isActive,
@@ -21,7 +22,8 @@ function DailyGoalContainer({
                 <div className={`daily-goal-container ${isActive ? 'active' : ''}`}>
                     <h2 className='daily-goal'>{isActive ? dailyGoal : null}</h2>
                 </div>
-                <BsThreeDotsVertical className='three-dots' onClick={modalAction} />
+                <div className="three-dots-container"><BsThreeDotsVertical className='three-dots' onClick={modalAction} /></div>
+
             </div>
 
             <div className='habit-body'>
