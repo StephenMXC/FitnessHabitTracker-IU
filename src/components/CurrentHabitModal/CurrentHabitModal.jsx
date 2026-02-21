@@ -15,6 +15,7 @@ export const CurrentHabitModal = ({
         title: habit?.title || '',
         image: habit?.image || '',
         completionRate: Number(habit?.completionRate) || 0,
+        commitmentLevel: habit?.engagementTime || '',
     });
 
     const [completionRateChanged, setCompletionRateChanged] = useState(false);
@@ -29,6 +30,7 @@ export const CurrentHabitModal = ({
                 title: habit.title || '',
                 image: habit.image || '',
                 completionRate: habit.completionRate || 0,
+                commitmentLevel: habit.engagementTime || '',
             });
             setCompletionRateChanged(false);
         }
@@ -49,6 +51,13 @@ export const CurrentHabitModal = ({
         setCompletionRateChanged(true);
     };
 
+    const handleCommitmentLevelChange = (value) => {
+        setFormData(prev => ({
+            ...prev,
+            commitmentLevel: value,
+        }));
+    };
+
 
     const handleSave = () => {
         onSave(formData);
@@ -60,6 +69,7 @@ export const CurrentHabitModal = ({
             title: habit?.title || '',
             image: habit?.image || '',
             completionRate: habit?.completionRate || 0,
+            commitmentLevel: habit?.engagementTime || '',
         });
         setCompletionRateChanged(false);
         onClose();
@@ -88,7 +98,7 @@ export const CurrentHabitModal = ({
                         onCompletionRateChange={handleCompletionRateChange}
                         completionRateChanged={completionRateChanged}
                         onKeepCompletionRate={handleKeepCompletionRate}
-                        commitmentLevel={handleCommitmentLevel}
+                        onCommitmentLevelChange={handleCommitmentLevelChange}
                     />
 
                     <div className="modal-actions">

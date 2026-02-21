@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './currentHabitForm.css';
 
-export const CurrentHabitForm = ({ formData, onInputChange, onCompletionRateChange, completionRateChanged, onKeepCompletionRate }) => {
+export const CurrentHabitForm = ({ formData, onInputChange, onCompletionRateChange, completionRateChanged, onKeepCompletionRate, onCommitmentLevelChange }) => {
 
     const COMMITMENT_TIMES = [
         { value: '15', label: '15 mins/day' },
@@ -10,8 +10,6 @@ export const CurrentHabitForm = ({ formData, onInputChange, onCompletionRateChan
         { value: '120', label: '2 hours/day' },
         { value: '180', label: '3 hours/day' },
     ];
-
-    const [selectedCommitmentLevel, setSelectedCommitmentLevel] = useState('');
     
     return (
         <form className="habit-form">
@@ -32,8 +30,8 @@ export const CurrentHabitForm = ({ formData, onInputChange, onCompletionRateChan
                 <label className='form-label'>Daily Commitment</label>
                 <select
                     className='form-select'
-                    value={selectedCommitmentLevel}
-                    onChange={(e) => setSelectedCommitmentTime(e.target.value)}
+                    value={formData.commitmentLevel}
+                    onChange={(e) => onCommitmentLevelChange(e.target.value)}
                 >
                     <option value=''>Select commitment time</option>
                     {COMMITMENT_TIMES.map(time => (

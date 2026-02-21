@@ -42,7 +42,7 @@ const Habits = () => {
         setHabitsList(prevList =>
             prevList.map(habit =>
                 habit.id === currentHabit.id
-                    ? { ...habit, ...updatedHabit, completionRate: rate }
+                    ? { ...habit, ...updatedHabit, completionRate: rate, engagementTime: updatedHabit.commitmentLevel }
                     : habit
             )
         );
