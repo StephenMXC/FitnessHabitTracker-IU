@@ -119,3 +119,9 @@ exports.updateHabit = (req, res) => {
     );
   });
 };
+
+// in summary, this controller file defines the logic for handling CRUD operations on habits.
+// Each function interacts with the database to perform the necessary operations 
+// while ensuring that users can only access and modify their own habits.
+// The functions also handle errors gracefully and send appropriate JSON responses back to the client,
+// which the frontend can then use to update the UI accordingly.
