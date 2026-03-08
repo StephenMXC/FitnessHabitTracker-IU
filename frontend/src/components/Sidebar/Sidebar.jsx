@@ -1,15 +1,22 @@
 // Sidebar.jsx
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import './sidebar.css'; 
 
 function Sidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const links = [
     { name: 'Dashboard', path: '/' },
-    { name: 'Fitness', path: '/fitness' },
     { name: 'Habits', path: '/habits' },
   ];
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <div className="sidebar">
@@ -21,6 +28,24 @@ function Sidebar() {
           </li>
         ))}
       </ul>
+      <div style={{ marginTop: 'auto', padding: '1rem' }}>
+        <button
+          onClick={handleLogout}
+          style={{
+            width: '100%',
+            padding: '0.75rem',
+            backgroundColor: '#d32f2f',
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontSize: '1rem',
+            fontWeight: 'bold',
+          }}
+        >
+          Logout
+        </button>
+      </div>
     </div>
   );
 }

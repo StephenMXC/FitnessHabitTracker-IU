@@ -1,14 +1,17 @@
 .sidebar {
   width: 14%;
-  height: auto;
+  height: 100vh;
   background-color: #222222b5;
   color: #fff;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-links {
   list-style: none;
   padding: 0;
+  flex: 1;
 }
 
 .sidebar-links li {

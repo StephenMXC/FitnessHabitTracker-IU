@@ -52,12 +52,20 @@ function initializeDatabase() {
       name TEXT NOT NULL,
       category TEXT DEFAULT 'general',
       description TEXT,
+      image LONGTEXT,
       createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
     )
   `, (err) => {
     if (err) console.error('Error creating habits table:', err);
-    else console.log('Habits table ready');
+    else {
+      console.log('Habits table ready');
+      // Try to add image column if it doesn't exist (for existing databases)
+      db.run(`ALTER TABLE habits ADD COLUMN image LONGTEXT`, (alterErr) => {
+        // Error is expected if column already exists, so we ignore it
+        if (!alterErr) console.log('Added image column to habits table');
+      });
+    }
   });
 
   // Create HabitRecords table (for tracking completion)
