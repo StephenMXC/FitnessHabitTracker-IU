@@ -62,7 +62,7 @@ const Dashboard = () => {
         <h1>Dashboard</h1>
       </div>
       <div className="dashboard-content">
-        <p>Welcome back, {user?.userId}! 👋</p>
+        <p>Welcome, {user?.userId}! 👋</p>
         <div style={{ marginTop: '2rem' }}>
           <h2>Your Stats</h2>
           <div

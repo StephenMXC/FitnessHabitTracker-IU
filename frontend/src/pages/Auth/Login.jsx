@@ -75,7 +75,7 @@ const Login = () => {
             />
 
             {(localError || error) && (
-              <div style={{ color: '#d32f2f', marginBottom: '1rem', fontSize: '0.9rem' }}>
+              <div style={{ color: '#2313d2', marginBottom: '1rem', fontSize: '0.9rem' }}>
                 {localError || error}
               </div>
             )}

@@ -2,7 +2,9 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { authAPI } from '../services/api';
 
 // Create Auth Context
-const AuthContext = createContext(null);
+const AuthContext = createContext(null); // this creates a tunnel through which react pipes data through the component tree.
+// it is like a TV channel that, prior to broadcasting, reserves a frequency for itself. The NULL value is there 
+// for a component that tunes in before the Provider is set up (which is why useAuth() throws an error instead of silently returning null).
 
 // Auth Provider Component
 export function AuthProvider({ children }) {
