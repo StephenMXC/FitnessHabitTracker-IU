@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { IoFitness } from 'react-icons/io5';
 import '../Fitness/fitness.css'; // Reusing fitness styles
+import './login.css';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -75,16 +76,15 @@ const Login = () => {
             />
 
             {(localError || error) && (
-              <div style={{ color: '#2313d2', marginBottom: '1rem', fontSize: '0.9rem' }}>
+              <div className="error-message">
                 {localError || error}
               </div>
             )}
 
             <button
               type="submit"
-              className="create-account-button"
+              className="create-account-button login-button"
               disabled={isLoading}
-              style={{ opacity: isLoading ? 0.6 : 1 }}
             >
               {isLoading ? 'Logging in...' : 'Log In'}
             </button>

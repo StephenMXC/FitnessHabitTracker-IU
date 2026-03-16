@@ -1,10 +1,11 @@
 import Sidebar from "../components/Sidebar/Sidebar";
+import './default-layout.css';
 
 function DefaultLayout({ children }) {
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
+    <div className="layout-container">
       <Sidebar />
-      <main style={{ flex: 1, padding: '1rem' }}>
+      <main className="layout-main">
         {children}
       </main>
     </div>

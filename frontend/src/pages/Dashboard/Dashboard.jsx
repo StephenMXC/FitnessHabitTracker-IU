@@ -46,9 +46,9 @@ const Dashboard = () => {
         <div className="dashboard-header">
           <h1>Dashboard</h1>
         </div>
-        <div className="dashboard-content" style={{ color: '#d32f2f' }}>
+        <div className="dashboard-content error-content">
           <p>Error: {error}</p>
-          <button onClick={fetchStats} style={{ marginTop: '1rem' }}>
+          <button onClick={fetchStats} className="retry-button">
             Retry
           </button>
         </div>
@@ -62,40 +62,19 @@ const Dashboard = () => {
         <h1>Dashboard</h1>
       </div>
       <div className="dashboard-content">
-        <p>Welcome, {user?.userId}! 👋</p>
-        <div style={{ marginTop: '2rem' }}>
+        <p>Welcome, {user?.username}! 👋</p>
+        <div className="stats-section">
           <h2>Your Stats</h2>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '1rem',
-              marginTop: '1rem',
-            }}
-          >
-            <div
-              style={{
-                padding: '1.5rem',
-                backgroundColor: '#f0f0f0',
-                borderRadius: '8px',
-                textAlign: 'center',
-              }}
-            >
-              <h3 style={{ color: '#666' }}>Total Habits</h3>
-              <p style={{ fontSize: '2rem', fontWeight: 'bold', color: '#4CAF50' }}>
+          <div className="stats-grid">
+            <div className="stat-card">
+              <h3 className="stat-title">Total Habits</h3>
+              <p className="stat-value">
                 {stats?.totalHabits || 0}
               </p>
             </div>
-            <div
-              style={{
-                padding: '1.5rem',
-                backgroundColor: '#f0f0f0',
-                borderRadius: '8px',
-                textAlign: 'center',
-              }}
-            >
-              <h3 style={{ color: '#666' }}>Completed Today</h3>
-              <p style={{ fontSize: '2rem', fontWeight: 'bold', color: '#4CAF50' }}>
+            <div className="stat-card">
+              <h3 className="stat-title">Completed Today</h3>
+              <p className="stat-value">
                 {stats?.completedToday || 0}
               </p>
             </div>

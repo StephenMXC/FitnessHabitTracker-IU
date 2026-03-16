@@ -16,9 +16,10 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     const userId = localStorage.getItem('userId');
+    const username = localStorage.getItem('username');
 
-    if (token && userId) {
-      setUser({ userId, token });
+    if (token && userId && username) {
+      setUser({ userId, token, username });
     }
 
     setIsLoading(false);
@@ -33,11 +34,12 @@ export function AuthProvider({ children }) {
       const response = await authAPI.login(username, password);
       const { token, userId } = response;
 
-      // Store token and userId in localStorage
+      // Store token, userId, and username in localStorage
       localStorage.setItem('authToken', token);
       localStorage.setItem('userId', userId);
+      localStorage.setItem('username', username);
 
-      setUser({ userId, token });
+      setUser({ userId, token, username });
       return { success: true, userId };
     } catch (err) {
       const errorMsg = err.message || 'Login failed';
@@ -57,11 +59,12 @@ export function AuthProvider({ children }) {
       const response = await authAPI.signup(username, email, password);
       const { token, userId } = response;
 
-      // Store token and userId in localStorage
+      // Store token, userId, and username in localStorage
       localStorage.setItem('authToken', token);
       localStorage.setItem('userId', userId);
+      localStorage.setItem('username', username);
 
-      setUser({ userId, token });
+      setUser({ userId, token, username });
       return { success: true, userId };
     } catch (err) {
       const errorMsg = err.message || 'Signup failed';
@@ -76,6 +79,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userId');
+    localStorage.removeItem('username');
     setUser(null);
     setError(null);
   };

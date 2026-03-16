@@ -240,7 +240,7 @@ const Habits = () => {
 
       {/* Error message */}
       {error && (
-        <div style={{ padding: '1rem', backgroundColor: '#ffebee', color: '#d32f2f', borderRadius: '8px', width: '100%' }}>
+        <div className="error-banner">
           {error}
         </div>
       )}

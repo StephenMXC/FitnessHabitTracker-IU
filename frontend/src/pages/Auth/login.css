@@ -1,0 +1,13 @@
+.error-message {
+  color: #2313d2;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.login-button {
+  opacity: 1;
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+}

@@ -94,11 +94,10 @@ export default function CreateHabitFormModal({
               type="file"
               accept="image/*"
               onChange={handleFileUpload}
-              className="form-input"
-              style={{ cursor: 'pointer' }}
+              className="form-input image-upload-button"
             />
             {newHabitForm.selectedImage && !AVAILABLE_IMAGES.some(img => img.image === newHabitForm.selectedImage) && (
-              <p style={{ fontSize: '12px', color: '#2d5016', marginTop: '5px' }}>
+              <p className="image-preview-text">
                 ✓ Custom image selected (max 500KB)
               </p>
             )}
@@ -148,7 +147,7 @@ export default function CreateHabitFormModal({
           <div className="form-group">
             <label className="form-label">Description</label>
             <textarea
-              className="form-input"
+              className="form-input description-textarea"
               value={newHabitForm.description}
               onChange={(e) =>
                 setNewHabitForm({
@@ -157,11 +156,10 @@ export default function CreateHabitFormModal({
                 })
               }
               placeholder="Optional: Describe your habit"
-              style={{ minHeight: '80px', resize: 'vertical' }}
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
+          <div className="modal-buttons">
             <button
               type="button"
               onClick={() => {
@@ -174,30 +172,13 @@ export default function CreateHabitFormModal({
                   commitmentTime: '30',
                 });
               }}
-              style={{
-                padding: '0.75rem 1.5rem',
-                backgroundColor: '#f0f0f0',
-                color: '#333',
-                border: 'none',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontSize: '1rem',
-              }}
+              className="cancel-button"
             >
               Cancel
             </button>
             <button
               type="submit"
-              style={{
-                padding: '0.75rem 1.5rem',
-                backgroundColor: '#34c707',
-                color: 'white',
-                border: 'none',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                fontWeight: 'bold',
-              }}
+              className="create-button"
             >
               Create
             </button>

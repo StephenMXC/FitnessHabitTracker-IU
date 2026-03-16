@@ -28,20 +28,10 @@ function Sidebar() {
           </li>
         ))}
       </ul>
-      <div style={{ marginTop: 'auto', padding: '1rem' }}>
+      <div className="logout-container">
         <button
           onClick={handleLogout}
-          style={{
-            width: '100%',
-            padding: '0.75rem',
-            backgroundColor: '#d32f2f',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '1rem',
-            fontWeight: 'bold',
-          }}
+          className="logout-button"
         >
           Logout
         </button>

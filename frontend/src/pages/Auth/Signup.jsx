@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { IoFitness } from 'react-icons/io5';
 import '../Fitness/fitness.css';
+import './signup.css';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -106,7 +107,7 @@ const Signup = () => {
             />
 
             {(localError || error) && (
-              <div style={{ color: '#ff6b6b', marginBottom: '1rem', fontSize: '0.9rem', textAlign: 'center' }}>
+              <div className="error-message">
                 {localError || error}
               </div>
             )}
