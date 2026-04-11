@@ -13,10 +13,10 @@ export default function EditHabitModal({
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div className="create-modal-overlay" onClick={onClose}>
+      <div className="create-modal-content" onClick={(e) => e.stopPropagation()}>
         <button
-          className="modal-close"
+          className="create-modal-close"
           onClick={onClose}
           disabled={isLoading}
         >

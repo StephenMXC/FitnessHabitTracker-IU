@@ -77,6 +77,7 @@ export function AuthProvider({ children }) {
 
   // Logout function
   const logout = () => {
+    // Keep habit storage intact so data persists across sessions
     localStorage.removeItem('authToken');
     localStorage.removeItem('userId');
     localStorage.removeItem('username');

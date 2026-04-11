@@ -9,15 +9,19 @@ import CreateHabitFormModal from '../../components/CreateHabitModal/CreateHabitF
 import { STATS_CARD_DATA, formatCommitmentTime } from './habitsConstant.jsx';
 import { useHabitActions } from '../../hooks/useHabitActions.js';
 import { saveToLocalStorage, loadFromLocalStorage } from '../../utils/habitStorage.js';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 import '../../components/CreateHabitModal/createHabitModal.css';
 
 const Habits = () => {
+  const { user } = useAuth();
   const [percentages, setPercentages] = useState({});
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentEditingHabit, setCurrentEditingHabit] = useState(null);
   const [streak, setStreak] = useState(0);
   const [lastStreakTimestamp, setLastStreakTimestamp] = useState(null);
+  const [completedDays, setCompletedDays] = useState(0);
+  const [lastIncrementDate, setLastIncrementDate] = useState(null);
 
   const [newHabitForm, setNewHabitForm] = useState({
     name: '',
@@ -29,25 +33,41 @@ const Habits = () => {
 
   const { habitsList, setHabitsList, loading, error, setError, editLoading, fetchHabits, createHabit, updateHabit, deleteHabit } = useHabitActions();
 
+  // Clear state when user changes (runs first)
+  useEffect(() => {
+    if (!user?.userId) {
+      // If no user, clear everything
+      setPercentages({});
+      setStreak(0);
+      setLastStreakTimestamp(null);
+      setCompletedDays(0);
+      setLastIncrementDate(null);
+    }
+  }, [user?.userId]);
+
   // Initialize component with fetch and localStorage restore
   useEffect(() => {
+    if (!user?.userId) return; // Don't load if user not authenticated
+
     const loadAndFetchHabits = async () => {
       // Load from localStorage first (as primary source)
-      const localData = loadFromLocalStorage();
+      const localData = loadFromLocalStorage(user.userId);
+      
+      console.log(`Loading data for user ${user.userId}:`, localData);
       
       // Restore local state immediately from localStorage
       if (localData.habits && localData.habits.length > 0) {
         setHabitsList(localData.habits);
+      } else {
+        setHabitsList([]);
       }
-      if (localData.percentages && Object.keys(localData.percentages).length > 0) {
-        setPercentages(localData.percentages);
-      }
-      if (localData.streak && localData.streak > 0) {
-        setStreak(localData.streak);
-      }
-      if (localData.lastStreakTimestamp) {
-        setLastStreakTimestamp(localData.lastStreakTimestamp);
-      }
+      
+      // Always restore percentages from localStorage for this user
+      setPercentages(localData.percentages || {});
+      setStreak(localData.streak || 0);
+      setLastStreakTimestamp(localData.lastStreakTimestamp || null);
+      setCompletedDays(localData.completedDays || 0);
+      setLastIncrementDate(localData.lastIncrementDate || null);
 
       // Fetch from backend to get latest data (but keep localStorage images)
       const backendHabits = await fetchHabits();
@@ -69,10 +89,10 @@ const Habits = () => {
         
         // Initialize percentages for any new habits
         setPercentages(prev => {
-          const updated = { ...prev };
+          const updated = { ...localData.percentages }; // Start with loaded data
           mergedHabits.forEach(habit => {
             if (!(habit.id in updated)) {
-              updated[habit.id] = localData.percentages[habit.id] || 0;
+              updated[habit.id] = 0; // New habit gets 0
             }
           });
           return updated;
@@ -81,14 +101,28 @@ const Habits = () => {
     };
 
     loadAndFetchHabits();
-  }, [fetchHabits]);
+  }, [user?.userId]);
 
   // Save to localStorage whenever state changes
   useEffect(() => {
-    if (habitsList.length > 0) {
-      saveToLocalStorage(habitsList, percentages, streak, lastStreakTimestamp);
+    if (habitsList.length > 0 && user?.userId) {
+      saveToLocalStorage(habitsList, percentages, streak, lastStreakTimestamp, completedDays, lastIncrementDate, user.userId);
     }
-  }, [habitsList, percentages, streak, lastStreakTimestamp]);
+  }, [habitsList, percentages, streak, lastStreakTimestamp, completedDays, lastIncrementDate, user?.userId]);
+
+  // Check for 100% completion rate and increment completedDays once per day
+  useEffect(() => {
+    if (habitsList.length > 0) {
+      const rate = completionRates();
+      if (rate === 100) {
+        const today = new Date().toISOString().split('T')[0];
+        if (lastIncrementDate !== today) {
+          setCompletedDays(prev => prev + 1);
+          setLastIncrementDate(today);
+        }
+      }
+    }
+  }, [percentages, habitsList, lastIncrementDate]);
 
   const handleCreateHabit = async (e) => {
     e.preventDefault();
@@ -106,7 +140,7 @@ const Habits = () => {
       // Immediately save to localStorage to ensure image persists
       if (newHabit) {
         const updatedList = [...habitsList, newHabit];
-        saveToLocalStorage(updatedList, { ...percentages, [newHabit.id]: 0 }, streak, lastStreakTimestamp);
+        saveToLocalStorage(updatedList, { ...percentages, [newHabit.id]: 0 }, streak, lastStreakTimestamp, completedDays, lastIncrementDate, user.userId);
       }
 
       setPercentages((prev) => ({
@@ -155,7 +189,7 @@ const Habits = () => {
       saveToLocalStorage(updatedList, {
         ...percentages,
         [currentEditingHabit.id]: 0,
-      }, streak, lastStreakTimestamp);
+      }, streak, lastStreakTimestamp, completedDays, lastIncrementDate, user.userId);
       
       setShowEditModal(false);
       setCurrentEditingHabit(null);
@@ -172,7 +206,7 @@ const Habits = () => {
       
       // Immediately update localStorage with removed habit
       const updatedList = habitsList.filter(h => h.id !== currentEditingHabit.id);
-      saveToLocalStorage(updatedList, percentages, streak, lastStreakTimestamp);
+      saveToLocalStorage(updatedList, percentages, streak, lastStreakTimestamp, completedDays, lastIncrementDate, user.userId);
       
       setShowEditModal(false);
       setCurrentEditingHabit(null);

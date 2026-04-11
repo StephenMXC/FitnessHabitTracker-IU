@@ -8,10 +8,26 @@ const Dashboard = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [completedDays, setCompletedDays] = useState(0);
 
   useEffect(() => {
+    // Reset completed days when user changes
+    if (!user?.userId) {
+      setCompletedDays(0);
+      return;
+    }
+    
     fetchStats();
-  }, []);
+    // Load completed days from localStorage (user-specific)
+    const completedDaysKey = `fitnessTracker_completedDays_${user.userId}`;
+    const storedCompletedDays = localStorage.getItem(completedDaysKey);
+    console.log(`Loading completedDays for user ${user.userId}:`, storedCompletedDays);
+    if (storedCompletedDays) {
+      setCompletedDays(JSON.parse(storedCompletedDays));
+    } else {
+      setCompletedDays(0);
+    }
+  }, [user?.userId]);
 
   const fetchStats = async () => {
     try {
@@ -75,7 +91,7 @@ const Dashboard = () => {
             <div className="stat-card">
               <h3 className="stat-title">Completed Today</h3>
               <p className="stat-value">
-                {stats?.completedToday || 0}
+                {completedDays}
               </p>
             </div>
           </div>
