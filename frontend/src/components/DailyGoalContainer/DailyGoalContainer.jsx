@@ -32,7 +32,7 @@ function DailyGoalContainer({
                     <div className='engagement-time'>{engagementTime}</div>
                 </div>
                 <div className='progress-circle'>
-                    <CircularProgressbar value={percentage} text={`${percentage}%`} />
+                    <CircularProgressbar value={Number(percentage) || 0} text={`${Number(percentage) || 0}%`} />
                 </div>
             </div>
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import '../CreateHabitModal/createHabitModal.css';
-import { AVAILABLE_IMAGES } from '../../pages/Habits/habitsConstant';
+import { AVAILABLE_IMAGES, COMMITMENT_TIMES, formatCommitmentTime, getCommitmentValue } from '../../pages/Habits/habitsConstant';
 
 export default function EditHabitForm({
   habit,
@@ -14,7 +14,7 @@ export default function EditHabitForm({
     name: habit?.name || '',
     category: habit?.category || 'general',
     description: habit?.description || '',
-    commitmentTime: habit?.commitmentTime || '30',
+    commitmentTime: getCommitmentValue(habit?.commitmentTime),
     selectedImage: habit?.image || null,
   });
 
@@ -72,7 +72,7 @@ export default function EditHabitForm({
       category: formData.category,
       description: formData.description,
       image: formData.selectedImage,
-      commitmentTime: formData.commitmentTime,
+      commitmentTime: formatCommitmentTime(formData.commitmentTime),
     });
   };
 
@@ -170,13 +170,11 @@ export default function EditHabitForm({
             borderRadius: '4px',
           }}
         >
-          <option value="15">15 minutes</option>
-          <option value="30">30 minutes</option>
-          <option value="45">45 minutes</option>
-          <option value="60">1 hour</option>
-          <option value="90">1.5 hours</option>
-          <option value="120">2 hours</option>
-          <option value="180">3 hours</option>
+          {COMMITMENT_TIMES.map((time) => (
+            <option key={time.value} value={time.value}>
+              {time.label}
+            </option>
+          ))}
         </select>
       </div>
 

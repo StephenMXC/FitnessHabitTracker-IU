@@ -28,60 +28,59 @@ const db = new sqlite3.Database(dbPath, (err) => {
 // It is the main function that sets up our database schema. 
 // It creates three tables: users, habits, and habitRecords. Each table has its own set of columns and constraints.
 function initializeDatabase() {
-  // Create Users table
-  db.run(`
-    CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      username TEXT UNIQUE NOT NULL,
-      email TEXT UNIQUE NOT NULL,
-      password TEXT NOT NULL,
-      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-  `
-  // Here, we are checking if there was an error creating the users table. If there was, we log it, otherwise we log that the users table is ready.
-  , (err) => {
-    if (err) console.error('Error creating users table:', err);
-    else console.log('Users table ready');
-  });
-
-  // Create Habits table
-  db.run(`
-    CREATE TABLE IF NOT EXISTS habits (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      userId INTEGER NOT NULL,
-      name TEXT NOT NULL,
-      category TEXT DEFAULT 'general',
-      description TEXT,
-      image LONGTEXT,
-      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
-    )
-  `, (err) => {
-    if (err) console.error('Error creating habits table:', err);
-    else {
-      console.log('Habits table ready');
-      // Try to add image column if it doesn't exist (for existing databases)
-      db.run(`ALTER TABLE habits ADD COLUMN image LONGTEXT`, (alterErr) => {
-        // Error is expected if column already exists, so we ignore it
-        if (!alterErr) console.log('Added image column to habits table');
+  // Drop existing tables to start fresh for demo (in reverse order due to foreign keys)
+  db.run('DROP TABLE IF EXISTS habitRecords', (err) => {
+    if (err) console.error('Error dropping habitRecords table:', err);
+    db.run('DROP TABLE IF EXISTS habits', (err) => {
+      if (err) console.error('Error dropping habits table:', err);
+      db.run('DROP TABLE IF EXISTS users', (err) => {
+        if (err) console.error('Error dropping users table:', err);
+        // Now create tables
+        db.run(`
+          CREATE TABLE users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+          )
+        `, (err) => {
+          if (err) console.error('Error creating users table:', err);
+          else console.log('Users table ready');
+          // Create habits table
+          db.run(`
+            CREATE TABLE habits (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              userId INTEGER NOT NULL,
+              name TEXT NOT NULL,
+              category TEXT DEFAULT 'general',
+              description TEXT,
+              image LONGTEXT,
+              createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+              FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
+            )
+          `, (err) => {
+            if (err) console.error('Error creating habits table:', err);
+            else console.log('Habits table ready');
+            // Create habitRecords table
+            db.run(`
+              CREATE TABLE habitRecords (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                habitId INTEGER NOT NULL,
+                date DATE NOT NULL,
+                completed INTEGER DEFAULT 0,
+                notes TEXT,
+                FOREIGN KEY (habitId) REFERENCES habits(id) ON DELETE CASCADE,
+                UNIQUE(habitId, date)
+              )
+            `, (err) => {
+              if (err) console.error('Error creating habitRecords table:', err);
+              else console.log('HabitRecords table ready');
+            });
+          });
+        });
       });
-    }
-  });
-
-  // Create HabitRecords table (for tracking completion)
-  db.run(`
-    CREATE TABLE IF NOT EXISTS habitRecords (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      habitId INTEGER NOT NULL,
-      date DATE NOT NULL,
-      completed INTEGER DEFAULT 0,
-      notes TEXT,
-      FOREIGN KEY (habitId) REFERENCES habits(id) ON DELETE CASCADE,
-      UNIQUE(habitId, date)
-    )
-  `, (err) => {
-    if (err) console.error('Error creating habitRecords table:', err);
-    else console.log('HabitRecords table ready');
+    });
   });
 }
 

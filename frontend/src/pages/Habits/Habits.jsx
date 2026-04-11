@@ -6,7 +6,7 @@ import DailyGoalContainer from '../../components/DailyGoalContainer/DailyGoalCon
 import StatCard from '../../components/StatCard/StatCard.jsx';
 import EditHabitModal from '../../components/EditHabitModal/EditHabitModal.jsx';
 import CreateHabitFormModal from '../../components/CreateHabitModal/CreateHabitFormModal.jsx';
-import { STATS_CARD_DATA } from './habitsConstant.jsx';
+import { STATS_CARD_DATA, formatCommitmentTime } from './habitsConstant.jsx';
 import { useHabitActions } from '../../hooks/useHabitActions.js';
 import { saveToLocalStorage, loadFromLocalStorage } from '../../utils/habitStorage.js';
 import '../../components/CreateHabitModal/createHabitModal.css';
@@ -59,8 +59,10 @@ const Habits = () => {
             ...backendHabit,
             // Keep backend image if it exists, otherwise use localStorage image
             image: backendHabit.image || (localHabit && localHabit.image),
-            // Keep backend commitmentTime if exists, otherwise use localStorage
-            commitmentTime: backendHabit.commitmentTime || (localHabit && localHabit.commitmentTime),
+            // Normalize commitmentTime to a readable label
+            commitmentTime: formatCommitmentTime(
+              backendHabit.commitmentTime || (localHabit && localHabit.commitmentTime)
+            ),
           };
         });
         setHabitsList(mergedHabits);
@@ -92,12 +94,13 @@ const Habits = () => {
     e.preventDefault();
 
     try {
+      const formattedCommitmentTime = formatCommitmentTime(newHabitForm.commitmentTime);
       const newHabit = await createHabit(
         newHabitForm.name,
         newHabitForm.category,
         newHabitForm.description,
         newHabitForm.selectedImage,
-        newHabitForm.commitmentTime
+        formattedCommitmentTime
       );
 
       // Immediately save to localStorage to ensure image persists
@@ -133,15 +136,26 @@ const Habits = () => {
     if (!currentEditingHabit) return;
 
     try {
-      await updateHabit(currentEditingHabit.id, updatedData);
+      const formattedCommitmentTime = formatCommitmentTime(updatedData.commitmentTime);
+      await updateHabit(currentEditingHabit.id, {
+        ...updatedData,
+        commitmentTime: formattedCommitmentTime,
+      });
       
-      // Immediately update localStorage with new habit data
       const updatedList = habitsList.map(h => 
         h.id === currentEditingHabit.id 
-          ? { ...h, ...updatedData }
+          ? { ...h, ...updatedData, commitmentTime: formattedCommitmentTime }
           : h
       );
-      saveToLocalStorage(updatedList, percentages, streak, lastStreakTimestamp);
+      setHabitsList(updatedList);
+      setPercentages((prev) => ({
+        ...prev,
+        [currentEditingHabit.id]: 0,
+      }));
+      saveToLocalStorage(updatedList, {
+        ...percentages,
+        [currentEditingHabit.id]: 0,
+      }, streak, lastStreakTimestamp);
       
       setShowEditModal(false);
       setCurrentEditingHabit(null);
@@ -245,6 +259,8 @@ const Habits = () => {
         </div>
       )}
 
+      <h1 className="page-title">Fitness/Habits</h1>
+
       {/* Habit Cards */}
       <section className="habit-cards">
         {habitsList.map((habit) => (
@@ -253,7 +269,7 @@ const Habits = () => {
             dailyGoal="Pending"
             isActive={false}
             title={habit.name}
-            engagementTime={habit.commitmentTime || '30 mins/day'}
+            engagementTime={formatCommitmentTime(habit.commitmentTime)}
             buttonTitle="Mark Complete"
             image={habit.image}
             percentage={percentages[habit.id] || 0}

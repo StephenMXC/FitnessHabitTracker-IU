@@ -42,10 +42,41 @@ export const AVAILABLE_IMAGES = [
 export const COMMITMENT_TIMES = [
   { value: '15', label: '15 mins/day' },
   { value: '30', label: '30 mins/day' },
+  { value: '45', label: '45 mins/day' },
   { value: '60', label: '1 hour/day' },
   { value: '120', label: '2 hours/day' },
   { value: '180', label: '3 hours/day' },
 ];
+
+export function formatCommitmentTime(value) {
+  if (!value) return '30 mins/day';
+
+  const match = COMMITMENT_TIMES.find(
+    (option) => option.value === value || option.label === value
+  );
+
+  if (match) return match.label;
+
+  if (/^\d+$/.test(value)) {
+    const numeric = Number(value);
+    if (numeric === 60) return '1 hour/day';
+    if (numeric === 120) return '2 hours/day';
+    if (numeric === 180) return '3 hours/day';
+    return `${numeric} mins/day`;
+  }
+
+  return value;
+}
+
+export function getCommitmentValue(value) {
+  if (!value) return '30';
+
+  const match = COMMITMENT_TIMES.find(
+    (option) => option.value === value || option.label === value
+  );
+
+  return match ? match.value : '30';
+}
 
 
 

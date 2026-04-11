@@ -111,9 +111,7 @@ export default function CreateHabitFormModal({
               onChange={(e) =>
                 setNewHabitForm({
                   ...newHabitForm,
-                  commitmentTime: COMMITMENT_TIMES.find(
-                    (ct) => ct.value === e.target.value
-                  )?.label || '30 mins/day',
+                  commitmentTime: e.target.value,
                 })
               }
               style={{ cursor: 'pointer' }}

@@ -10,7 +10,7 @@ function Sidebar() {
 
   const links = [
     { name: 'Dashboard', path: '/' },
-    { name: 'Habits', path: '/habits' },
+    { name: 'Fitness/Habits', path: '/habits' },
   ];
 
   const handleLogout = () => {

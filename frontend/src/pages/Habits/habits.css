@@ -8,6 +8,13 @@
   gap: 40px;
 }
 
+.page-title {
+  align-self: flex-start;
+  margin: 0;
+  color: white;
+  font-size: 2rem;
+}
+
 /* Row: Completion cards */
 .currentstreak-totalhabits-completionrate-cards {
   display: flex;
@@ -207,7 +214,7 @@
   border-radius: 8px;
   width: 100%;
 }
-}
+
 
 .new-habit-button {
   width: 100%;
