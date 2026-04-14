@@ -84,7 +84,7 @@ export default function EditHabitForm({
 
   return (
     <div className="habit-form">
-      <h2 style={{ marginBottom: '20px', color: '#2d5016' }}>Edit Habit</h2>
+      <h2 className="edit-habit" style={{ marginBottom: '20px', color: '#2d5016' }}>Edit Habit</h2>
 
       {/* Habit Name */}
       <div

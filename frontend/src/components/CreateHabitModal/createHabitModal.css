@@ -13,6 +13,10 @@
     animation: fadeIn 0.3s ease-in-out;
 }
 
+.edit-habit{
+    color: white !important;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
