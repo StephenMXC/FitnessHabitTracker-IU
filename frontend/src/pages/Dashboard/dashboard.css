@@ -1,3 +1,31 @@
+.dashboard-page {
+  position: relative;
+}
+
+.dashboard-frit-image {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 202px;
+  height: auto;
+  z-index: 10;
+  animation: flexing 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes flexing {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-5px) scale(1.04);
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
 .stats-section {
   margin-top: 2rem;
 }
@@ -32,4 +60,53 @@
 
 .error-content {
   color: #d32f2f;
+}
+
+.habits-graph-section {
+  margin-top: 2rem;
+}
+
+.habits-graph {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.habit-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.habit-bar-label {
+  min-width: 140px;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+  color: #46ff00;
+}
+
+.habit-bar-track {
+  flex: 1;
+  height: 16px;
+  background: #ffffff52;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.habit-bar-fill {
+  height: 100%;
+  background: #4caf50;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.habit-bar-value {
+  width: 52px;
+  text-align: right;
+  font-weight: 700;
+  color: #333;
 }

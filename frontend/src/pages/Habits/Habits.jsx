@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './habits.css';
 import { FaPlus } from "react-icons/fa";
 import 'react-circular-progressbar/dist/styles.css';
@@ -20,8 +20,9 @@ const Habits = () => {
   const [currentEditingHabit, setCurrentEditingHabit] = useState(null);
   const [streak, setStreak] = useState(0);
   const [lastStreakTimestamp, setLastStreakTimestamp] = useState(null);
-  const [completedDays, setCompletedDays] = useState(0);
+  const [completedToday, setCompletedToday] = useState(0);
   const [lastIncrementDate, setLastIncrementDate] = useState(null);
+  const prevCompletionRate = useRef(null);
 
   const [newHabitForm, setNewHabitForm] = useState({
     name: '',
@@ -40,7 +41,7 @@ const Habits = () => {
       setPercentages({});
       setStreak(0);
       setLastStreakTimestamp(null);
-      setCompletedDays(0);
+      setCompletedToday(0);
       setLastIncrementDate(null);
     }
   }, [user?.userId]);
@@ -66,7 +67,7 @@ const Habits = () => {
       setPercentages(localData.percentages || {});
       setStreak(localData.streak || 0);
       setLastStreakTimestamp(localData.lastStreakTimestamp || null);
-      setCompletedDays(localData.completedDays || 0);
+      setCompletedToday((localData.completedToday ?? localData.completedDays) || 0);
       setLastIncrementDate(localData.lastIncrementDate || null);
 
       // Fetch from backend to get latest data (but keep localStorage images)
@@ -106,23 +107,33 @@ const Habits = () => {
   // Save to localStorage whenever state changes
   useEffect(() => {
     if (habitsList.length > 0 && user?.userId) {
-      saveToLocalStorage(habitsList, percentages, streak, lastStreakTimestamp, completedDays, lastIncrementDate, user.userId);
+      saveToLocalStorage(habitsList, percentages, streak, lastStreakTimestamp, completedToday, lastIncrementDate, user.userId);
     }
-  }, [habitsList, percentages, streak, lastStreakTimestamp, completedDays, lastIncrementDate, user?.userId]);
+  }, [habitsList, percentages, streak, lastStreakTimestamp, completedToday, lastIncrementDate, user?.userId]);
 
-  // Check for 100% completion rate and increment completedDays once per day
+  // Check for 100% completion rate and mark completedToday once per day
   useEffect(() => {
-    if (habitsList.length > 0) {
-      const rate = completionRates();
-      if (rate === 100) {
-        const today = new Date().toISOString().split('T')[0];
-        if (lastIncrementDate !== today) {
-          setCompletedDays(prev => prev + 1);
-          setLastIncrementDate(today);
-        }
-      }
+    if (habitsList.length === 0 || !user?.userId) {
+      prevCompletionRate.current = null;
+      return;
     }
-  }, [percentages, habitsList, lastIncrementDate]);
+
+    const rate = completionRates();
+    const today = new Date().toISOString().split('T')[0];
+
+    if (rate === 100) {
+      if (lastIncrementDate !== today && prevCompletionRate.current !== 100) {
+        setCompletedToday(1);
+        setLastIncrementDate(today);
+      } else if (lastIncrementDate === today && completedToday !== 1) {
+        setCompletedToday(1);
+      }
+    } else if (lastIncrementDate !== today && completedToday !== 0) {
+      setCompletedToday(0);
+    }
+
+    prevCompletionRate.current = rate;
+  }, [percentages, habitsList, lastIncrementDate, completedToday, user?.userId]);
 
   const handleCreateHabit = async (e) => {
     e.preventDefault();
@@ -137,10 +148,9 @@ const Habits = () => {
         formattedCommitmentTime
       );
 
-      // Immediately save to localStorage to ensure image persists
       if (newHabit) {
         const updatedList = [...habitsList, newHabit];
-        saveToLocalStorage(updatedList, { ...percentages, [newHabit.id]: 0 }, streak, lastStreakTimestamp, completedDays, lastIncrementDate, user.userId);
+        saveToLocalStorage(updatedList, { ...percentages, [newHabit.id]: 0 }, streak, lastStreakTimestamp, completedToday, lastIncrementDate, user.userId);
       }
 
       setPercentages((prev) => ({
@@ -182,14 +192,7 @@ const Habits = () => {
           : h
       );
       setHabitsList(updatedList);
-      setPercentages((prev) => ({
-        ...prev,
-        [currentEditingHabit.id]: 0,
-      }));
-      saveToLocalStorage(updatedList, {
-        ...percentages,
-        [currentEditingHabit.id]: 0,
-      }, streak, lastStreakTimestamp, completedDays, lastIncrementDate, user.userId);
+      saveToLocalStorage(updatedList, percentages, streak, lastStreakTimestamp, completedToday, lastIncrementDate, user.userId);
       
       setShowEditModal(false);
       setCurrentEditingHabit(null);
@@ -204,9 +207,11 @@ const Habits = () => {
     try {
       await deleteHabit(currentEditingHabit.id);
       
-      // Immediately update localStorage with removed habit
       const updatedList = habitsList.filter(h => h.id !== currentEditingHabit.id);
-      saveToLocalStorage(updatedList, percentages, streak, lastStreakTimestamp, completedDays, lastIncrementDate, user.userId);
+      const updatedPercentages = { ...percentages };
+      delete updatedPercentages[currentEditingHabit.id];
+      setPercentages(updatedPercentages);
+      saveToLocalStorage(updatedList, updatedPercentages, streak, lastStreakTimestamp, completedToday, lastIncrementDate, user.userId);
       
       setShowEditModal(false);
       setCurrentEditingHabit(null);

@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './dashboard.css';
-import { dashboardAPI } from '../../services/api';
+import { dashboardAPI, habitsAPI } from '../../services/api';
+import { loadFromLocalStorage } from '../../utils/habitStorage.js';
 import { useAuth } from '../../contexts/AuthContext';
+import fritImage from '../../assets/frit.png';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -9,27 +11,9 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [completedDays, setCompletedDays] = useState(0);
+  const [habitProgress, setHabitProgress] = useState([]);
 
-  useEffect(() => {
-    // Reset completed days when user changes
-    if (!user?.userId) {
-      setCompletedDays(0);
-      return;
-    }
-    
-    fetchStats();
-    // Load completed days from localStorage (user-specific)
-    const completedDaysKey = `fitnessTracker_completedDays_${user.userId}`;
-    const storedCompletedDays = localStorage.getItem(completedDaysKey);
-    console.log(`Loading completedDays for user ${user.userId}:`, storedCompletedDays);
-    if (storedCompletedDays) {
-      setCompletedDays(JSON.parse(storedCompletedDays));
-    } else {
-      setCompletedDays(0);
-    }
-  }, [user?.userId]);
-
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     try {
       setLoading(true);
       const data = await dashboardAPI.getStats();
@@ -41,7 +25,57 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!user?.userId) {
+      setCompletedDays(0);
+      setHabitProgress([]);
+      return;
+    }
+
+    const loadLocalProgress = async () => {
+      const localData = loadFromLocalStorage(user.userId);
+      setCompletedDays((localData.completedToday ?? localData.completedDays) || 0);
+
+      const localHabits = localData.habits || [];
+      const localPercentages = localData.percentages || {};
+
+      if (localHabits.length > 0) {
+        setHabitProgress(
+          localHabits.map((habit) => ({
+            id: habit.id,
+            name: habit.name,
+            percentage: Math.max(0, Math.min(100, localPercentages[habit.id] ?? 0)),
+          }))
+        );
+      } else {
+        try {
+          const backendHabits = await habitsAPI.getHabits();
+          setHabitProgress(
+            backendHabits.map((habit) => ({
+              id: habit.id,
+              name: habit.name,
+              percentage: 0,
+            }))
+          );
+        } catch (err) {
+          setHabitProgress([]);
+        }
+      }
+    };
+
+    loadLocalProgress();
+    fetchStats();
+
+    const handleStorageUpdate = (event) => {
+      if (!event.key || !event.key.includes(user.userId)) return;
+      loadLocalProgress();
+    };
+
+    window.addEventListener('storage', handleStorageUpdate);
+    return () => window.removeEventListener('storage', handleStorageUpdate);
+  }, [user?.userId, fetchStats]);
 
   if (loading) {
     return (
@@ -74,6 +108,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-page">
+      <img src={fritImage} alt="Frit" className="dashboard-frit-image" />
       <div className="dashboard-header">
         <h1>Dashboard</h1>
       </div>
@@ -95,6 +130,27 @@ const Dashboard = () => {
               </p>
             </div>
           </div>
+        </div>
+        <div className="habits-graph-section">
+          <h2>Habits Completion</h2>
+          {habitProgress.length > 0 ? (
+            <div className="habits-graph">
+              {habitProgress.map((habit) => (
+                <div className="habit-bar-row" key={habit.id}>
+                  <span className="habit-bar-label">{habit.name}</span>
+                  <div className="habit-bar-track">
+                    <div
+                      className="habit-bar-fill"
+                      style={{ width: `${habit.percentage}%` }}
+                    />
+                  </div>
+                  <span className="habit-bar-value">{habit.percentage}%</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No habits yet. Create a habit on the Fitness/Habits page to see this graph.</p>
+          )}
         </div>
       </div>
     </div>

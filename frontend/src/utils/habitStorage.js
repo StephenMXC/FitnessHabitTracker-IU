@@ -70,14 +70,20 @@ export const loadFromLocalStorage = (userId) => {
     const timestampData = localStorage.getItem(STORAGE_KEYS.LAST_STREAK_TIMESTAMP);
     const completedDaysData = localStorage.getItem(STORAGE_KEYS.COMPLETED_DAYS);
     const incrementDateData = localStorage.getItem(STORAGE_KEYS.LAST_INCREMENT_DATE);
+    const today = new Date().toISOString().split('T')[0];
+
+    const parsedCompletedDays = completedDaysData ? JSON.parse(completedDaysData) : 0;
+    const parsedLastIncrementDate = incrementDateData ? JSON.parse(incrementDateData) : null;
+    const completedToday = parsedLastIncrementDate === today ? (parsedCompletedDays > 0 ? 1 : 0) : 0;
 
     return {
       habits: habits ? JSON.parse(habits) : null,
       percentages: percentagesData ? JSON.parse(percentagesData) : {},
       streak: streakData ? JSON.parse(streakData) : 0,
       lastStreakTimestamp: timestampData ? JSON.parse(timestampData) : null,
-      completedDays: completedDaysData ? JSON.parse(completedDaysData) : 0,
-      lastIncrementDate: incrementDateData ? JSON.parse(incrementDateData) : null,
+      completedDays: completedToday,
+      completedToday,
+      lastIncrementDate: parsedLastIncrementDate,
     };
   } catch (err) {
     console.error('Failed to load from localStorage:', err);
