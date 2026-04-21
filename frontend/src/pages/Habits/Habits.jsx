@@ -10,6 +10,7 @@ import { STATS_CARD_DATA, formatCommitmentTime } from './habitsConstant.jsx';
 import { useHabitActions } from '../../hooks/useHabitActions.js';
 import { saveToLocalStorage, loadFromLocalStorage } from '../../utils/habitStorage.js';
 import { useAuth } from '../../contexts/AuthContext.jsx';
+import { dashboardAPI } from '../../services/api.js';
 import '../../components/CreateHabitModal/createHabitModal.css';
 
 const Habits = () => {
@@ -121,17 +122,35 @@ const Habits = () => {
     const rate = completionRates();
     const today = new Date().toISOString().split('T')[0];
 
-    if (rate === 100) {
-      if (lastIncrementDate !== today && prevCompletionRate.current !== 100) {
-        setCompletedToday(1);
-        setLastIncrementDate(today);
-      } else if (lastIncrementDate === today && completedToday !== 1) {
-        setCompletedToday(1);
+    const markDailyCompletion = async () => {
+      try {
+        // Only mark as completed if this is a new transition to 100%
+        if (rate === 100 && lastIncrementDate !== today && prevCompletionRate.current !== 100) {
+          // Call backend to save this completion
+          console.log(`Marking day ${today} as 100% completed (new transition)`);
+          const response = await dashboardAPI.markCompletion(today, true);
+          console.log('Backend response:', response);
+          setCompletedToday(1);
+          setLastIncrementDate(today);
+        } else if (rate === 100 && lastIncrementDate === today && completedToday !== 1) {
+          // Ensure it's marked even if component remounts
+          console.log(`Marking day ${today} as 100% completed (re-check)`);
+          const response = await dashboardAPI.markCompletion(today, true);
+          console.log('Backend response:', response);
+          setCompletedToday(1);
+        } else if (rate < 100 && lastIncrementDate === today) {
+          // If completion rate drops below 100%, mark the day as not fully completed
+          console.log(`Marking day ${today} as incomplete (completion dropped)`);
+          const response = await dashboardAPI.markCompletion(today, false);
+          console.log('Backend response:', response);
+          setCompletedToday(0);
+        }
+      } catch (err) {
+        console.error('Failed to mark daily completion:', err);
       }
-    } else if (lastIncrementDate !== today && completedToday !== 0) {
-      setCompletedToday(0);
-    }
+    };
 
+    markDailyCompletion();
     prevCompletionRate.current = rate;
   }, [percentages, habitsList, lastIncrementDate, completedToday, user?.userId]);
 

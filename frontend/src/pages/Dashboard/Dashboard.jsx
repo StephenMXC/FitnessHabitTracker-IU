@@ -22,6 +22,7 @@ const Dashboard = () => {
     try {
       setLoading(true);
       const data = await dashboardAPI.getStats();
+      console.log('Dashboard stats received:', data);
       setStats(data);
       setError(null);
     } catch (err) {
@@ -88,13 +89,22 @@ const Dashboard = () => {
 
     loadDashboardData();
 
+    // Refetch stats every 5 seconds to catch updates from Habits page
+    const statsRefreshInterval = setInterval(() => {
+      fetchStats();
+    }, 5000);
+
     const handleStorageUpdate = (event) => {
       if (!event.key || !event.key.includes(user.userId)) return;
       loadLocalProgress();
+      fetchStats(); // Also refetch stats when localStorage changes
     };
 
     window.addEventListener('storage', handleStorageUpdate);
-    return () => window.removeEventListener('storage', handleStorageUpdate);
+    return () => {
+      clearInterval(statsRefreshInterval);
+      window.removeEventListener('storage', handleStorageUpdate);
+    };
   }, [user?.userId, fetchStats]);
 
   const getDayLabel = (index) => {
@@ -171,8 +181,8 @@ const Dashboard = () => {
         <div className="weekly-section">
           <h2>THIS WEEK</h2>
           <div className="weekly-days">
-            {stats?.weeklyActivity && stats.weeklyActivity.map((hasActivity, index) => (
-              <div key={index} className={`day-indicator ${hasActivity ? 'active' : ''}`}>
+            {stats && (stats.weeklyCompletion || [false, false, false, false, false, false, false]).map((isCompleted, index) => (
+              <div key={index} className={`day-indicator ${isCompleted ? 'completed' : ''}`}>
                 <span className="day-letter">{getDayLetter(index)}</span>
                 <span className="day-label">{getDayLabel(index)}</span>
               </div>

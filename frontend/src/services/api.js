@@ -150,6 +150,13 @@ export const dashboardAPI = {
       method: 'GET',
       requiresAuth: true,
     }),
+
+  markCompletion: (date, isFullyCompleted) =>
+    apiCall('/dashboard/mark-completion', {
+      method: 'POST',
+      body: { date, isFullyCompleted },
+      requiresAuth: true,
+    }),
 };
 
 // ========== HEALTH CHECK ==========

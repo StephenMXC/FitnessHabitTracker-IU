@@ -15,4 +15,6 @@ router.get('/stats', verifyToken, dashboardController.getDashboardStats); // def
 // handle the request and return the user's dashboard statistics. without that middleware, anyone could access this endpoint 
 // and see stats for any user, which would be a security issue.
 
+router.post('/mark-completion', verifyToken, dashboardController.markDailyCompletion); // POST endpoint to mark daily completion when all habits reach 100%
+
 module.exports = router;

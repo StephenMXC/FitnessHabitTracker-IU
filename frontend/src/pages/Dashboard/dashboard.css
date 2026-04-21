@@ -136,6 +136,20 @@
   border-color: #4caf50;
 }
 
+.day-indicator.completed {
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  border-color: #2e7d32;
+  box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
+}
+
+.day-indicator.completed .day-letter {
+  color: #fff;
+}
+
+.day-indicator.completed .day-label {
+  color: #e8f5e9;
+}
+
 .day-letter {
   font-size: 1.2rem;
   font-weight: bold;
