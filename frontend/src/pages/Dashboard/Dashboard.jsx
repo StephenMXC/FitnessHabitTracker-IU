@@ -16,11 +16,15 @@ const Dashboard = () => {
   const [streak, setStreak] = useState(0);
   const [habitProgress, setHabitProgress] = useState([]);
   const [percentages, setPercentages] = useState({});
+  const isInitialLoadRef = useRef(true);
   const localHabitMapRef = useRef({});
 
   const fetchStats = useCallback(async () => {
     try {
-      setLoading(true);
+      // Only show loading on initial load, not on refreshes
+      if (isInitialLoadRef.current) {
+        setLoading(true);
+      }
       const data = await dashboardAPI.getStats();
       console.log('Dashboard stats received:', data);
       setStats(data);
@@ -29,7 +33,10 @@ const Dashboard = () => {
       setError(err.message);
       console.error('Failed to fetch dashboard stats:', err);
     } finally {
-      setLoading(false);
+      if (isInitialLoadRef.current) {
+        setLoading(false);
+        isInitialLoadRef.current = false;
+      }
     }
   }, []);
 

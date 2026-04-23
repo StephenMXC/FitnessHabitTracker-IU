@@ -8,10 +8,9 @@
 
 const jwt = require('jsonwebtoken'); // importing the jsonwebtoken library, which is used to create and verify JWTs.
 
-const JWT_SECRET = 'your-secret-key-change-this-for-production'; // This is the secret key used to sign and verify tokens.
-// In a real application, this should be stored securely (e.g., in environment variables) and not hardcoded. But for 
-// this project, it's fine to have it here for simplicity. In production, you would want to change this to a strong, unique value and keep it secure.
-// It is also good practice to change the secret key periodically to enhance security.
+// Get JWT_SECRET from environment variables (secure approach)
+// Falls back to default only for development/testing
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this-for-production';
 
 // This is the middleware function that will be used to protect routes. It checks for the presence of a JWT in 
 // the authorization header of the incoming request, verifies it, and if valid, allows the request to proceed.

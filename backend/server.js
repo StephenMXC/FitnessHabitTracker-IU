@@ -1,3 +1,5 @@
+require('dotenv').config(); // Load environment variables from .env file
+
 const express = require('express'); // this line imports the Express framework, which is a popular web app framework for node.js. It 
 //                                     provides a simple way to create web servers and APIs. "require" is how we include external modules in Node.js,
 //                                     similar to "import" in other languages. const express a variable that holds the imported Express module .
@@ -17,13 +19,14 @@ const db = require('./database'); // imports SQLite database setup. db now gives
 const authRoutes = require('./routes/auth');
 const habitsRoutes = require('./routes/habits');
 const dashboardRoutes = require('./routes/dashboard');
+const { verifyToken } = require('./middleware/auth'); // Import auth middleware
 
 const app = express(); // Creates an Express application instance. app is now the main server. Routes and middleware will be attached to it.
-const PORT = 5000; // Defines the port number the server (app) will listen on. can be changed.
+const PORT = process.env.PORT || 5000; // Use PORT from .env or default to 5000
 
 // Middleware
 app.use(cors()); // adds cors support globally. allows frontend to make requests to teh backend from a different origin. 
-app.use(express.json()); // Tells express to auto parse incoming JSON requests. without this, req.body will be undefined for JSON requests.
+app.use(express.json({ limit: '50mb' })); // Tells express to auto parse incoming JSON requests and accept payloads up to 50MB (for images)
 
 // Routes
 // These three lines mount the route modules (authRoutes, habitsRoutes, dashboardRoutes) 
@@ -41,10 +44,9 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
 
-
-// Health check
-// a simple GET endpoint to verify the backend is alive. Visiting http://localhost:5000/api/health in postman or a browser will allow you to see "{ "status": "Backend is running" }" if it's working.
-app.get('/api/health', (req, res) => {
+// Health check - PROTECTED: only authenticated users can check health status
+// This prevents information leakage about whether the backend is running
+app.get('/api/health', verifyToken, (req, res) => {
   res.json({ status: 'Backend is running' });
 });
 

@@ -41,8 +41,8 @@ export default function EditHabitForm({
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Check file size (limit to 500KB to avoid server issues)
-      if (file.size > 500000) {
+      // Check file size (limit to 500KB = 512000 bytes to avoid server issues)
+      if (file.size > 512000) {
         alert('Image size must be less than 500KB');
         return;
       }
