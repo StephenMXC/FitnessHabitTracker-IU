@@ -17,11 +17,14 @@ Make sure the following are installed:
 * Node.js (v16 or higher)
 * npm (comes with Node.js)
 To check, open terminal and run:
-
-1. node -v
-2. npm -v
-
-you should see a version number printed after each of these commands. If not, install online.
+```
+node -v
+```
+then,
+```
+npm -v
+```
+You should see a version number printed after each of these commands. If not, install online.
 
 ---
 
@@ -49,14 +52,15 @@ Open a terminal, run in order:
 
 (Before running, make sure you are in "FitnessHabitTracker-IU-main/FitnessHabitTracker-IU-main/". 
 If not, run cd FitnessHabitTracker-IU-main/FitnessHabitTracker-IU-main from the place where the extracted file appears after unzipping. Then run the following.)
-
-1.
+```
   cd backend
-2.
+```
+```
   npm install
-3.
+```
+```
   npm start
-
+```
 
 * Backend will run on:
   `http://localhost:5000`
@@ -67,21 +71,23 @@ If not, run cd FitnessHabitTracker-IU-main/FitnessHabitTracker-IU-main from the 
    - Copy `.env.example` in /backend/ to `.env`.
     Preferably, in a new terminal in /backend, run:
    - 
-     
+   ```  
      cp .env.example .env
-
+```
 
 ### 4. Start Frontend
 
 Open yet another new terminal in FitnessHabitTracker-IU-main/FitnessHabitTracker-IU-main/:
 
-1.
+```
   cd frontend
-2.
+```
+```
   npm install
-3.
+```
+```
   npm run dev
-
+```
 
 * Frontend will run on:
   `http://localhost:5173`
