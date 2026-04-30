@@ -109,6 +109,46 @@ exports.updateHabit = (req, res) => {
   });
 };
 
+// Mark a specific habit as complete or incomplete for today
+exports.markHabitComplete = (req, res) => {
+  const userId = req.userId;
+  const habitId = req.params.id;
+  const { completed } = req.body; // true or false
+
+  if (completed === undefined) {
+    return res.status(400).json({ error: 'completed status is required' });
+  }
+
+  // First, verify that this habit belongs to the user
+  db.get('SELECT id FROM habits WHERE id = ? AND userId = ?', [habitId, userId], (err, habit) => {
+    if (err) {
+      return res.status(500).json({ error: 'Database error' });
+    }
+
+    if (!habit) {
+      return res.status(404).json({ error: 'Habit not found' });
+    }
+
+    // Get today's date
+    const today = new Date().toISOString().split('T')[0];
+
+    // Insert or update the habitRecord for today
+    db.run(
+      `INSERT INTO habitRecords (habitId, date, completed)
+       VALUES (?, ?, ?)
+       ON CONFLICT(habitId, date) DO UPDATE SET completed = ?`,
+      [habitId, today, completed ? 1 : 0, completed ? 1 : 0],
+      (err) => {
+        if (err) {
+          console.error('Error marking habit complete:', err);
+          return res.status(500).json({ error: 'Database error' });
+        }
+        res.json({ success: true, message: 'Habit status updated' });
+      }
+    );
+  });
+};
+
 // in summary, this controller file defines the logic for handling CRUD operations on habits.
 // Each function interacts with the database to perform the necessary operations 
 // while ensuring that users can only access and modify their own habits.

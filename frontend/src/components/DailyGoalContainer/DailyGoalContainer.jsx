@@ -1,9 +1,5 @@
-import { CircularProgressbar } from "react-circular-progressbar";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import 'react-circular-progressbar/dist/styles.css';
 import '../../pages/Habits/habits.css';
-
-
 
 function DailyGoalContainer({
     dailyGoal,
@@ -14,31 +10,29 @@ function DailyGoalContainer({
     image,
     buttonAction,
     modalAction,
-    percentage
+    isCompleted
 }) {
     return (
         <div className='goals-card'>
             <div className='card-header' style={{ backgroundImage: `url(${image})` }}>
-                <div className={`daily-goal-container ${isActive ? 'active' : ''}`}>
-                    <h2 className='daily-goal'>{isActive ? dailyGoal : null}</h2>
-                </div>
                 <div className="three-dots-container"><BsThreeDotsVertical className='three-dots' onClick={modalAction} /></div>
-
             </div>
 
             <div className='habit-body'>
                 <div className='habit-info'>
-                    <h2>{title}</h2>
+                    <div className='habit-header-with-status'>
+                        <h2>{title}</h2>
+                        <div className={`daily-goal-badge ${isCompleted ? 'active' : ''}`}>
+                            <h2 className='daily-goal'>{isCompleted ? '✓ Done' : 'Pending'}</h2>
+                        </div>
+                    </div>
                     <div className='engagement-time'>{engagementTime}</div>
-                </div>
-                <div className='progress-circle'>
-                    <CircularProgressbar value={Number(percentage) || 0} text={`${Number(percentage) || 0}%`} />
                 </div>
             </div>
 
             <div className='habit-footer'>
-                <button className='mark-complete-button' onClick={buttonAction}>
-                    {buttonTitle}
+                <button className={`mark-complete-button ${isCompleted ? 'completed' : ''}`} onClick={buttonAction}>
+                    {isCompleted ? 'Mark Incomplete' : 'Mark Complete'}
                 </button>
             </div>
         </div>

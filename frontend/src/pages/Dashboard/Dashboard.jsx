@@ -173,7 +173,7 @@ const Dashboard = () => {
               <h3 className="stat-title">TOTAL HABITS</h3>
               <p className="stat-value">{stats?.totalHabits || 0}</p>
               <p className="stat-subtitle">
-                {stats?.completedToday || 0} active today
+                {stats?.completedToday || 0} completed today
               </p>
             </div>
             <div className="stat-card">
@@ -205,7 +205,7 @@ const Dashboard = () => {
             {habitProgress.length > 0 ? (
               <div className="checklist-items">
                 {habitProgress.map((habit) => {
-                  const isCompleted = percentages[habit.id] === 100;
+                  const isCompleted = percentages[habit.id] === true;
                   return (
                     <div
                       key={habit.id}
@@ -231,39 +231,6 @@ const Dashboard = () => {
               </div>
             ) : (
               <p className="empty-state">No habits yet</p>
-            )}
-          </div>
-
-          {/* Habit Completion Graph */}
-          <div className="completion-section">
-            <h2>HABIT COMPLETION</h2>
-            {habitProgress.length > 0 ? (
-              <div className="habits-completion-list">
-                {habitProgress.map((habit) => (
-                  <div key={habit.id} className="habit-completion-item">
-                    <div className="habit-info">
-                      <span className="habit-name">{habit.name}</span>
-                      <span className={`habit-category ${habit.category}`}>{habit.category}</span>
-                    </div>
-                    <div className="habit-bar-container">
-                      <div className="habit-bar-track">
-                        <div
-                          className="habit-bar-fill"
-                          style={{ width: `${habit.percentage}%` }}
-                        />
-                      </div>
-                      <span className="habit-percentage">{habit.percentage}%</span>
-                    </div>
-                    {habit.percentage === 100 && (
-                      <span className="streak-badge">
-                        {streak > 0 ? `${streak}-day streak` : 'On track'}
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="empty-state">No habits yet. Create a habit on the Fitness/Habits page.</p>
             )}
           </div>
         </div>

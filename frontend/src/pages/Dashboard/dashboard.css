@@ -12,6 +12,22 @@
   animation: flexing 3.5s ease-in-out infinite alternate;
 }
 
+@media (max-width: 768px) {
+  .dashboard-frit-image {
+    width: 140px;
+    top: -40px;
+    right: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-frit-image {
+    width: 100px;
+    top: -30px;
+    right: 0px;
+  }
+}
+
 @keyframes flexing {
   0% {
     transform: translateY(0) scale(1);
@@ -40,6 +56,26 @@
 .welcome-text {
   margin: 0.5rem 0 0 0;
   font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .welcome-text {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-header h1 {
+    font-size: 1.25rem;
+  }
+  
+  .welcome-text {
+    font-size: 0.75rem;
+  }
 }
 
 .dashboard-content {
@@ -95,6 +131,19 @@
   margin: 0.5rem 0 0 0;
   font-size: 0.85rem;
   color: #a0a0a0;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .weekly-days {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .weekly-days {
+    gap: 0.5rem;
+  }
 }
 
 /* Weekly Section */
@@ -129,6 +178,20 @@
   border: 1px solid rgba(76, 175, 80, 0.2);
   cursor: default;
   transition: all 0.2s ease;
+}
+
+@media (max-width: 768px) {
+  .day-indicator {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .day-indicator {
+    width: 45px;
+    height: 45px;
+  }
 }
 
 .day-indicator.active {
@@ -411,19 +474,12 @@
 @media (max-width: 768px) {
   .stats-grid {
     grid-template-columns: 1fr;
-  }
-
-  .weekly-days {
-    gap: 0.75rem;
-  }
-
-  .day-indicator {
-    width: 50px;
-    height: 50px;
+    gap: 1rem;
   }
 
   .dashboard-grid {
     gap: 1.5rem;
+    grid-template-columns: 1fr;
   }
 
   .stat-value {
@@ -432,5 +488,96 @@
 
   .stat-card {
     padding: 1.5rem;
+  }
+  
+  .stat-title {
+    font-size: 0.8rem;
+  }
+  
+  .checklist-section,
+  .completion-section {
+    padding: 1.5rem;
+  }
+  
+  .weekly-section {
+    margin-bottom: 2rem;
+  }
+  
+  .day-letter {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-page {
+    position: relative;
+  }
+  
+  .dashboard-header {
+    padding-bottom: 0.75rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .stat-card {
+    padding: 1rem;
+  }
+  
+  .stat-title {
+    font-size: 0.7rem;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+  
+  .stat-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .dashboard-grid {
+    gap: 1rem;
+  }
+  
+  .checklist-section,
+  .completion-section {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .checklist-section h2,
+  .completion-section h2 {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+  
+  .checklist-item,
+  .habit-completion-item {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+  
+  .checklist-label,
+  .habit-name {
+    font-size: 0.85rem;
+  }
+  
+  .checklist-duration,
+  .habit-category {
+    font-size: 0.7rem;
+  }
+  
+  .habit-bar-fill {
+    height: 15px;
+  }
+  
+  .habit-percentage {
+    font-size: 0.8rem;
+    min-width: 35px;
   }
 }

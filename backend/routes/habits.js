@@ -17,6 +17,7 @@ router.get('/', verifyToken, habitsController.getHabits);
 router.post('/', verifyToken, habitsController.createHabit);
 router.put('/:id', verifyToken, habitsController.updateHabit);
 router.delete('/:id', verifyToken, habitsController.deleteHabit);
+router.post('/:id/mark-complete', verifyToken, habitsController.markHabitComplete);
 
 module.exports = router;
 

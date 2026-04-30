@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './habits.css';
 import { FaPlus } from "react-icons/fa";
-import 'react-circular-progressbar/dist/styles.css';
 import DailyGoalContainer from '../../components/DailyGoalContainer/DailyGoalContainer.jsx';
 import StatCard from '../../components/StatCard/StatCard.jsx';
 import EditHabitModal from '../../components/EditHabitModal/EditHabitModal.jsx';
@@ -10,7 +9,7 @@ import { STATS_CARD_DATA, formatCommitmentTime } from './habitsConstant.jsx';
 import { useHabitActions } from '../../hooks/useHabitActions.js';
 import { saveToLocalStorage, loadFromLocalStorage } from '../../utils/habitStorage.js';
 import { useAuth } from '../../contexts/AuthContext.jsx';
-import { dashboardAPI } from '../../services/api.js';
+import { dashboardAPI, habitsAPI } from '../../services/api.js';
 import '../../components/CreateHabitModal/createHabitModal.css';
 
 const Habits = () => {
@@ -89,12 +88,12 @@ const Habits = () => {
         });
         setHabitsList(mergedHabits);
         
-        // Initialize percentages for any new habits
+        // Initialize percentages for any new habits and sync with backend completion status
         setPercentages(prev => {
           const updated = { ...localData.percentages }; // Start with loaded data
           mergedHabits.forEach(habit => {
             if (!(habit.id in updated)) {
-              updated[habit.id] = 0; // New habit gets 0
+              updated[habit.id] = false; // New habit gets false (not completed)
             }
           });
           return updated;
@@ -169,12 +168,12 @@ const Habits = () => {
 
       if (newHabit) {
         const updatedList = [...habitsList, newHabit];
-        saveToLocalStorage(updatedList, { ...percentages, [newHabit.id]: 0 }, streak, lastStreakTimestamp, completedToday, lastIncrementDate, user.userId);
+        saveToLocalStorage(updatedList, { ...percentages, [newHabit.id]: false }, streak, lastStreakTimestamp, completedToday, lastIncrementDate, user.userId);
       }
 
       setPercentages((prev) => ({
         ...prev,
-        [newHabit?.id || habitsList.length]: 0,
+        [newHabit?.id || habitsList.length]: false,
       }));
 
       setNewHabitForm({
@@ -239,43 +238,54 @@ const Habits = () => {
     }
   };
 
-  const handleComplete = (id) => {
-    const now = Date.now();
+  const handleComplete = async (id) => {
+    const isCurrentlyCompleted = percentages[id] === true;
+    const newCompletedStatus = !isCurrentlyCompleted;
 
-    // percentage logic
-    setPercentages((p) => ({
-      ...p,
-      [id]: Math.min((p[id] ?? 0) + 10, 100),
-    }));
+    try {
+      // Call backend to mark habit complete/incomplete
+      await habitsAPI.markHabitComplete(id, newCompletedStatus);
 
-    // streak logic
-    setStreak((prevStreak) => {
-      if (!lastStreakTimestamp) {
-        setLastStreakTimestamp(now);
-        return 1;
+      // Update local state
+      setPercentages((p) => ({
+        ...p,
+        [id]: newCompletedStatus,
+      }));
+
+      // Update streak if marking as complete and it's a new day
+      if (newCompletedStatus) {
+        const now = Date.now();
+        setStreak((prevStreak) => {
+          if (!lastStreakTimestamp) {
+            setLastStreakTimestamp(now);
+            return 1;
+          }
+
+          const hoursSinceLast = (now - lastStreakTimestamp) / (1000 * 60 * 60);
+
+          if (hoursSinceLast <= 24) {
+            return prevStreak;
+          }
+
+          if (hoursSinceLast <= 48) {
+            setLastStreakTimestamp(now);
+            return prevStreak + 1;
+          }
+
+          setLastStreakTimestamp(now);
+          return 1;
+        });
       }
-
-      const hoursSinceLast = (now - lastStreakTimestamp) / (1000 * 60 * 60);
-
-      if (hoursSinceLast <= 24) {
-        return prevStreak;
-      }
-
-      if (hoursSinceLast <= 48) {
-        setLastStreakTimestamp(now);
-        return prevStreak + 1;
-      }
-
-      setLastStreakTimestamp(now);
-      return 1;
-    });
+    } catch (err) {
+      console.error('Failed to mark habit complete:', err);
+      setError(err.message);
+    }
   };
 
   const completionRates = () => {
     if (habitsList.length === 0) return 0;
-    const habits = habitsList.map((habit) => percentages[habit.id] || 0);
-    const completionRate = habits.reduce((sum, value) => sum + value, 0) / habits.length;
-    return Math.round(completionRate);
+    const completedCount = habitsList.filter(habit => percentages[habit.id] === true).length;
+    return Math.round((completedCount / habitsList.length) * 100);
   };
 
   if (loading && habitsList.length === 0) {
@@ -324,13 +334,13 @@ const Habits = () => {
         {habitsList.map((habit) => (
           <DailyGoalContainer
             key={habit.id}
-            dailyGoal="Pending"
-            isActive={false}
+            dailyGoal="Done"
+            isActive={percentages[habit.id] === true}
             title={habit.name}
             engagementTime={formatCommitmentTime(habit.commitmentTime)}
             buttonTitle="Mark Complete"
             image={habit.image}
-            percentage={percentages[habit.id] || 0}
+            isCompleted={percentages[habit.id] === true}
             buttonAction={() => handleComplete(habit.id)}
             modalAction={() => handleEditHabit(habit)}
           />

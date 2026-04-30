@@ -1,7 +1,5 @@
 import React from 'react';
-import { CircularProgressbar } from "react-circular-progressbar";
 import { FaTimes } from "react-icons/fa";
-import 'react-circular-progressbar/dist/styles.css';
 import './habitModal.css';
 
 function HabitModal({ habit, percentage, isOpen, onClose, onButtonClick }) {
@@ -41,19 +39,6 @@ function HabitModal({ habit, percentage, isOpen, onClose, onButtonClick }) {
                             <span className={`detail-value ${habit.isActive ? 'active' : 'inactive'}`}>
                                 {habit.isActive ? 'Active' : 'Inactive'}
                             </span>
-                        </div>
-                    </div>
-
-                    <div className='modal-progress'>
-                        <div className='progress-circle-large'>
-                            <CircularProgressbar 
-                                value={percentage} 
-                                text={`${percentage}%`}
-                            />
-                        </div>
-                        <div className='progress-info'>
-                            <p className='progress-label'>Progress</p>
-                            <p className='progress-percentage'>{percentage}% Complete</p>
                         </div>
                     </div>
 

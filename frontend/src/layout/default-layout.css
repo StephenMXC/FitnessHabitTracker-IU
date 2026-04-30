@@ -1,9 +1,28 @@
 .layout-container {
   display: flex;
   min-height: 100vh;
+  flex-direction: row;
+}
+
+@media (max-width: 768px) {
+  .layout-container {
+    flex-direction: column;
+  }
 }
 
 .layout-main {
   flex: 1;
   padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  .layout-main {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .layout-main {
+    padding: 0.5rem;
+  }
 }

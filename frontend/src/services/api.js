@@ -141,6 +141,13 @@ export const habitsAPI = {
       method: 'DELETE',
       requiresAuth: true,
     }),
+
+  markHabitComplete: (habitId, completed) =>
+    apiCall(`/habits/${habitId}/mark-complete`, {
+      method: 'POST',
+      body: { completed },
+      requiresAuth: true,
+    }),
 };
 
 // ========== DASHBOARD ENDPOINTS ==========
