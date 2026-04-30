@@ -9,14 +9,21 @@ A Node.js/Express backend with SQLite3 for tracking user habits and fitness goal
    npm install
    ```
 
-2. **Run the server:**
+2. **Configure environment variables:**
+   - Copy `.env.example` to `.env`:
+     ```bash
+     cp .env.example .env
+     ```
+
+
+3. **Run the server:**
    ```bash
    npm start
    ```
 
    The server will start on `http://localhost:5000`
 
-3. **Database:**
+4. **Database:**
    - SQLite database file will be created automatically as `fitness_tracker.db`
    - All tables are initialized on first run
 
