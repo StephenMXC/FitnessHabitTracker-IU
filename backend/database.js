@@ -29,11 +29,15 @@ const db = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
-// This function creates the necessary tables for our application if they don't already exist.
-// It is the main function that sets up our database schema. 
-// It creates three tables: users, habits, and habitRecords. Each table has its own set of columns and constraints.
+// Initialize database schema - creates all necessary tables
+// Tables are dropped and recreated on each app startup to ensure fresh state
+// ORDER MATTERS: Must drop in reverse dependency order due to foreign key constraints
+//   1. habitRecords (depends on habits)
+//   2. dailyCompletion (depends on users)
+//   3. habits (depends on users)
+//   4. users (no dependencies)
 function initializeDatabase() {
-  // Drop tables in reverse order (foreign key constraints require this order)
+  // Drop habitRecords first (depends on habits table)
   db.run('DROP TABLE IF EXISTS habitRecords', (err) => {
     if (err) console.error('Error dropping habitRecords table:', err);
     db.run('DROP TABLE IF EXISTS dailyCompletion', (err) => {
@@ -42,55 +46,67 @@ function initializeDatabase() {
         if (err) console.error('Error dropping habits table:', err);
         db.run('DROP TABLE IF EXISTS users', (err) => {
           if (err) console.error('Error dropping users table:', err);
-          // Now create tables
+          // Create users table - stores user account information
+          // AUTOINCREMENT id ensures each user gets unique ID
+          // UNIQUE constraints prevent duplicate usernames/emails
           db.run(`
             CREATE TABLE users (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              username TEXT UNIQUE NOT NULL,
-              email TEXT UNIQUE NOT NULL,
-              password TEXT NOT NULL,
-              createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+              id INTEGER PRIMARY KEY AUTOINCREMENT,  -- Unique identifier for each user
+              username TEXT UNIQUE NOT NULL,           -- Login username, must be unique
+              email TEXT UNIQUE NOT NULL,              -- User email, must be unique
+              password TEXT NOT NULL,                  -- Hashed password (never plain text)
+              createdAt DATETIME DEFAULT CURRENT_TIMESTAMP  -- Auto-set to account creation time
             )
           `, (err) => {
             if (err) console.error('Error creating users table:', err);
             else console.log('Users table ready');
-            // Create habits table
+            
+            // Create habits table - stores all habits created by users
             db.run(`
               CREATE TABLE habits (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                userId INTEGER NOT NULL,
-                name TEXT NOT NULL,
-                category TEXT DEFAULT 'general',
-                description TEXT,
-                image LONGTEXT,
-                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,      -- Unique habit identifier
+                userId INTEGER NOT NULL,                     -- Links to user who created habit
+                name TEXT NOT NULL,                          -- Habit name/title
+                category TEXT DEFAULT 'general',             -- Category (general, fitness, etc.)
+                description TEXT,                            -- Optional habit description
+                image LONGTEXT,                              -- Base64 encoded image (can be large)
+                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, -- When habit was created
+                -- Foreign key: if user is deleted, all their habits are deleted too
                 FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
               )
             `, (err) => {
               if (err) console.error('Error creating habits table:', err);
               else console.log('Habits table ready');
-              // Create dailyCompletion table
+              
+              // Create dailyCompletion table - tracks 100% completion days
+              // Records when user completes ALL their habits in a single day
               db.run(`
                 CREATE TABLE dailyCompletion (
-                  id INTEGER PRIMARY KEY AUTOINCREMENT,
-                  userId INTEGER NOT NULL,
-                  date DATE NOT NULL,
-                  isFullyCompleted INTEGER DEFAULT 0,
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,      -- Unique record identifier
+                  userId INTEGER NOT NULL,                    -- Links to user
+                  date DATE NOT NULL,                         -- Date in YYYY-MM-DD format
+                  isFullyCompleted INTEGER DEFAULT 0,         -- 1 = all habits done, 0 = not all done
+                  -- Foreign key: if user deleted, their daily completion records deleted
                   FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE,
+                  -- UNIQUE constraint: one record per user per day
                   UNIQUE(userId, date)
                 )
               `, (err) => {
                 if (err) console.error('Error creating dailyCompletion table:', err);
                 else console.log('DailyCompletion table ready');
-                // Create habitRecords table
+                
+                // Create habitRecords table - tracks daily completion status of individual habits
+                // Each row = one habit on one date
                 db.run(`
                   CREATE TABLE habitRecords (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    habitId INTEGER NOT NULL,
-                    date DATE NOT NULL,
-                    completed INTEGER DEFAULT 0,
-                    notes TEXT,
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,     -- Unique record identifier
+                    habitId INTEGER NOT NULL,                  -- Links to specific habit
+                    date DATE NOT NULL,                        -- Date in YYYY-MM-DD format
+                    completed INTEGER DEFAULT 0,               -- 1 = completed, 0 = not completed
+                    notes TEXT,                                -- Optional notes about completion
+                    -- Foreign key: if habit deleted, all its records deleted
                     FOREIGN KEY (habitId) REFERENCES habits(id) ON DELETE CASCADE,
+                    -- UNIQUE constraint: one record per habit per day (can't mark same habit twice on same day)
                     UNIQUE(habitId, date)
                   )
                 `, (err) => {
