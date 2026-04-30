@@ -1,7 +1,19 @@
-const db = require('../database'); // import the database connection.
+// ============================================
+// DASHBOARD CONTROLLER
+// ============================================
+// PURPOSE: Retrieve dashboard statistics including habits, completion rates, and streaks.
+// ENDPOINTS:
+//   - getDashboardStats: Get all stats for dashboard display
+//   - markDailyCompletion: Mark when user completes all habits in a day (100%)
+// ============================================
 
+const db = require('../database');
+
+// GET DASHBOARD STATS: Retrieve comprehensive dashboard statistics
+// Receives: JWT token (via verifyToken) → req.userId is set
+// Returns: { totalHabits, completedToday, completionRate, habits[], weeklyCompletion[], completedDaysThisWeek }
 exports.getDashboardStats = (req, res) => {
-  const userId = req.userId; // extracting userID from request.
+  const userId = req.userId;
 
   // Get total habits count
   db.get('SELECT COUNT(*) as total FROM habits WHERE userId = ?', [userId], (err, totalResult) => {
@@ -93,7 +105,10 @@ exports.getDashboardStats = (req, res) => {
   });
 };
 
-// Mark a day as 100% completed
+// MARK DAILY COMPLETION: Record when user achieves 100% habit completion for a day
+// Receives: { date: 'YYYY-MM-DD', isFullyCompleted: boolean }
+// Returns: Success message
+// Purpose: Track full days for streak calculation and completion stats
 exports.markDailyCompletion = (req, res) => {
   const userId = req.userId;
   const { date, isFullyCompleted } = req.body;
@@ -102,7 +117,7 @@ exports.markDailyCompletion = (req, res) => {
     return res.status(400).json({ error: 'Date is required' });
   }
 
-  // Upsert into dailyCompletion table
+  // Upsert (insert or update) daily completion record
   db.run(
     `INSERT INTO dailyCompletion (userId, date, isFullyCompleted) 
      VALUES (?, ?, ?)
@@ -117,10 +132,3 @@ exports.markDailyCompletion = (req, res) => {
     }
   );
 };
-
-// in summary, 
-// the getDashboardStats function retrieves statistics for the user's dashboard,
-// including the total number of habits, completion rate based on weekly 100% completion,
-// today's habits, and weekly activity. It uses SQL queries to get this data from the database 
-// and sends it back as a JSON response.
-// The markDailyCompletion function saves when a day has 100% completion for the user.

@@ -1,3 +1,15 @@
+// ============================================
+// HABIT CARDS - HABITS LIST COMPONENT
+// ============================================
+// PURPOSE: Display list of habit cards with completion status.
+// RECEIVES:
+// - habits: array of habit objects
+// - percentages: completion percentages for each habit
+// - onMarkComplete: callback to mark habit complete
+// - onEdit: callback to open edit modal
+// DISPLAYS: Grid of DailyGoalContainer components
+// ============================================
+
 import readingImage from '../../assets/readingImage.jpg';
 import stretchingImage from '../../assets/stretchingStonk.jpg';
 import noSocialMediaImage from '../../assets/noSocialMedia.jpg';

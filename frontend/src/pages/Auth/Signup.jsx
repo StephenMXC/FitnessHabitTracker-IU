@@ -1,3 +1,17 @@
+// ============================================
+// SIGNUP PAGE COMPONENT
+// ============================================
+// PURPOSE: Registration form for new users to create account.
+// FLOW:
+// 1. Display signup form (username, email, password, confirm password)
+// 2. Validate passwords match and meet requirements
+// 3. Call signup() from AuthContext on submit
+// 4. Store JWT token in localStorage
+// 5. Redirect to dashboard on success
+// RECEIVES: Nothing (pulls from AuthContext)
+// SENDS: username, email, password to backend via api.signup()
+// ============================================
+
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -16,6 +30,7 @@ const Signup = () => {
   });
   const [localError, setLocalError] = useState('');
 
+  // Update form fields on input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -25,20 +40,23 @@ const Signup = () => {
     setLocalError('');
   };
 
+  // Handle form submission - validate and call signup
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
+    // Check all fields filled
     if (!formData.username.trim() || !formData.email.trim() || !formData.password.trim()) {
       setLocalError('Please fill in all fields');
       return;
     }
 
+    // Check passwords match
     if (formData.password !== formData.confirmPassword) {
       setLocalError('Passwords do not match');
       return;
     }
 
+    // Check password length
     if (formData.password.length < 6) {
       setLocalError('Password must be at least 6 characters');
       return;
@@ -47,7 +65,7 @@ const Signup = () => {
     const result = await signup(formData.username, formData.email, formData.password);
 
     if (result.success) {
-      navigate('/');
+      navigate('/'); // Redirect to dashboard
     } else {
       setLocalError(result.error);
     }

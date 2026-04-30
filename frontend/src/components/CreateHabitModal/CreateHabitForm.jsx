@@ -1,3 +1,14 @@
+// ============================================
+// CREATE HABIT FORM - FORM COMPONENT
+// ============================================
+// PURPOSE: Form to collect new habit details from user.
+// RECEIVES:
+// - onClose: callback to close modal
+// - onSuccess: callback after habit created
+// FIELDS: Name, Category, Description, Image, Commitment Time
+// SENDS TO BACKEND: Creates habit via habitsAPI.createHabit()
+// ============================================
+
 import React, { useState } from 'react';
 import readingImage from '../../assets/readingImage.jpg';
 import stretchingImage from '../../assets/stretchingStonk.jpg';

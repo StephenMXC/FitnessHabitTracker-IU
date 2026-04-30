@@ -1,18 +1,30 @@
-// Sidebar.jsx
+// ============================================
+// SIDEBAR COMPONENT
+// ============================================
+// PURPOSE: Navigation menu and logout button for authenticated users.
+// FEATURES:
+// - Links to Dashboard and Habits pages
+// - Highlights current active page
+// - Logout button that clears auth and redirects to login
+// USAGE: <Sidebar /> (rendered by DefaultLayout)
+// ============================================
+
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import './sidebar.css'; 
+import './sidebar.css';
 
 function Sidebar() {
-  const location = useLocation();
+  const location = useLocation(); // Current page URL
   const navigate = useNavigate();
   const { logout } = useAuth();
 
+  // Navigation links
   const links = [
     { name: 'Dashboard', path: '/' },
     { name: 'Fitness/Habits', path: '/habits' },
   ];
 
+  // Handle logout and redirect to login page
   const handleLogout = () => {
     logout();
     navigate('/login');

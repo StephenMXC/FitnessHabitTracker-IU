@@ -1,14 +1,22 @@
-// This is the route file for authentication-related endpoints.
-// It defines the routes for user signup and login, and connects them to the appropriate controller functions
-// in authController.js. When a POST request is made to /api/auth/signup, the signup function
-// in authController will handle it.
+// ============================================
+// AUTH ROUTES
+// ============================================
+// PURPOSE: Define routes for user authentication (signup and login).
+// ENDPOINTS:
+//   POST /api/auth/signup - Register new user account
+//   POST /api/auth/login - Authenticate and get JWT token
+// NO AUTHENTICATION REQUIRED: These are public endpoints
+// ============================================
 
 const express = require('express');
-const authController = require('../controllers/authController'); // importing authController, defined in controllers/authController.js, which contains the logic for handling signup and login requests. 
+const authController = require('../controllers/authController');
 
-const router = express.Router(); // new router instance. allows defining routes. done just below.
+const router = express.Router();
 
-router.post('/signup', authController.signup); // defines post route for /signup, calling signup from authcontroller.
-router.post('/login', authController.login); // defines post for /login, calling login from authcontroller.
+// Signup endpoint - Register new user
+router.post('/signup', authController.signup);
+
+// Login endpoint - Authenticate user and receive JWT
+router.post('/login', authController.login);
 
 module.exports = router;

@@ -1,8 +1,21 @@
+// ============================================
+// LOGIN PAGE COMPONENT
+// ============================================
+// PURPOSE: Authentication form for existing users to login.
+// FLOW:
+// 1. Display login form (username, password)
+// 2. Call login() from AuthContext on submit
+// 3. Store JWT token in localStorage
+// 4. Redirect to dashboard on success
+// RECEIVES: Nothing (pulls from AuthContext)
+// SENDS: username, password to backend via api.login()
+// ============================================
+
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { IoFitness } from 'react-icons/io5';
-import '../Fitness/fitness.css'; // Reusing fitness styles
+import '../Fitness/fitness.css';
 import './login.css';
 
 const Login = () => {
@@ -14,6 +27,7 @@ const Login = () => {
   });
   const [localError, setLocalError] = useState('');
 
+  // Update form fields on input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -23,6 +37,7 @@ const Login = () => {
     setLocalError('');
   };
 
+  // Handle form submission - call login and navigate on success
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -34,7 +49,7 @@ const Login = () => {
     const result = await login(formData.username, formData.password);
 
     if (result.success) {
-      navigate('/');
+      navigate('/'); // Redirect to dashboard
     } else {
       setLocalError(result.error);
     }

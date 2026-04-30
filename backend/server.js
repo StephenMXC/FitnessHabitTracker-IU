@@ -1,51 +1,58 @@
-require('dotenv').config(); // Load environment variables from .env file
+// ============================================
+// FITNESS TRACKER - BACKEND SERVER
+// ============================================
+// ENTRY POINT: Sets up Express server, configures middleware, and mounts all API routes.
+// 
+// PROGRAM FLOW:
+// 1. Load environment variables from .env file (JWT_SECRET, PORT, etc.)
+// 2. Import Express framework and required middleware
+// 3. Import database connection
+// 4. Import route handlers for auth, habits, and dashboard endpoints
+// 5. Create Express app instance and configure middleware
+// 6. Mount routes at specific paths (/api/auth, /api/habits, /api/dashboard)
+// 7. Start server on specified port
+//
+// COMMUNICATION:
+// - Frontend communicates with this backend via HTTP requests
+// - Backend queries SQLite database for user and habit data
+// - All protected routes require JWT token verification
+// ============================================
 
-const express = require('express'); // this line imports the Express framework, which is a popular web app framework for node.js. It 
-//                                     provides a simple way to create web servers and APIs. "require" is how we include external modules in Node.js,
-//                                     similar to "import" in other languages. const express a variable that holds the imported Express module .
-const cors = require('cors'); // imports the cors middleware, which allows your frontend to talk to the backend
-//                               without running into cross-origin issues.
-//                               CORS stands for Cross-Origin Resource Sharing, 
-//                               and it's a security feature in browsers
-//                               that restricts web pages from making requests
-//                               to a different domain than the one that served
-//                               the web page. By using this middleware, we can
-//                               enable our frontend (which might be served from a different port or domain)
-//                               to communicate with our backend API.
-const db = require('./database'); // imports SQLite database setup. db now gives access to the database tables and methods for queries.
+require('dotenv').config(); // Load environment variables from .env file (JWT_SECRET, PORT, etc.)
 
-// these three lines import route files that define endpoints for authentication, habits and dashboard stats.
-// These are like "sub-programs" that handle specific URLs. 
-const authRoutes = require('./routes/auth');
-const habitsRoutes = require('./routes/habits');
-const dashboardRoutes = require('./routes/dashboard');
-const { verifyToken } = require('./middleware/auth'); // Import auth middleware
+const express = require('express'); // Web framework for building HTTP APIs
+const cors = require('cors'); // Middleware to allow cross-origin requests from frontend
+const db = require('./database'); // SQLite database connection for querying/storing data
 
-const app = express(); // Creates an Express application instance. app is now the main server. Routes and middleware will be attached to it.
-const PORT = process.env.PORT || 5000; // Use PORT from .env or default to 5000
+// Import route handlers: each file defines endpoints for specific features
+const authRoutes = require('./routes/auth'); // POST /login, POST /signup
+const habitsRoutes = require('./routes/habits'); // GET/POST/PUT/DELETE /habits
+const dashboardRoutes = require('./routes/dashboard'); // GET /stats, POST /mark-completion
+const { verifyToken } = require('./middleware/auth'); // Middleware to verify JWT tokens on protected routes
 
-// Middleware
-app.use(cors()); // adds cors support globally. allows frontend to make requests to teh backend from a different origin. 
-app.use(express.json({ limit: '50mb' })); // Tells express to auto parse incoming JSON requests and accept payloads up to 50MB (for images)
+const app = express(); // Create Express application instance
+const PORT = process.env.PORT || 5000; // Server port from .env or default to 5000
 
-// Routes
-// These three lines mount the route modules (authRoutes, habitsRoutes, dashboardRoutes) 
-// on specific URL paths. Example: a POST to /api/auth/signup is handled by authRoutes, a GET to /api/habits is handled by habitsRoutes, and a GET to /api/dashboard/stats is handled by dashboardRoutes.
-// Express checks the paths, finds the correct route and calls the appropriate controller function.
-app.use('/api/auth', authRoutes); 
+// MIDDLEWARE CONFIGURATION
+app.use(cors()); // Enable CORS - allows frontend from different origin to communicate with backend
+app.use(express.json({ limit: '50mb' })); // Parse incoming JSON requests up to 50MB (for habit images)
+
+// ROUTE MOUNTING
+// Mount route handlers at specific API paths:
+// - /api/auth: authentication endpoints (login, signup)
+// - /api/habits: habit CRUD operations (create, read, update, delete)
+// - /api/dashboard: dashboard statistics and completion tracking
+app.use('/api/auth', authRoutes);
 app.use('/api/habits', habitsRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
-// Start server
-// This line starts the server and makes it listen on the defined
-// PORT. When the server is up and running, 
-// it logs a message to the console with the URL where it's accessible.
+// START SERVER
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
 
-// Health check - PROTECTED: only authenticated users can check health status
-// This prevents information leakage about whether the backend is running
+// HEALTH CHECK ENDPOINT (Protected)
+// Verifies backend is running. Only authenticated users can access (requires valid JWT token).
 app.get('/api/health', verifyToken, (req, res) => {
   res.json({ status: 'Backend is running' });
 });

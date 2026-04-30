@@ -1,30 +1,35 @@
-const db = require('../database'); // importing the SQLite database instance. Allowing interaction with it and performing CRUD ops
+// ============================================
+// HABITS CONTROLLER
+// ============================================
+// PURPOSE: Handle habit CRUD operations (Create, Read, Update, Delete)
+// SECURITY: All functions use req.userId (set by verifyToken middleware) to ensure
+//          users only access their own habits.
+// PATTERN: Each function validates input → checks ownership → performs DB operation → returns result
+// ============================================
 
-// getHabits retrieves all habits for the authenticated user. 
-// uses userID from the JWT token (set by verifyToken middleware) to query the database for habits that belong to that user.
+const db = require('../database');
+
+// GET ALL HABITS: Retrieve all habits for authenticated user
+// Receives: JWT token in headers (via verifyToken middleware) → req.userId is set
+// Returns: Array of habit objects sorted by creation date (newest first)
 exports.getHabits = (req, res) => {
-  const userId = req.userId; // here is the userID.
+  const userId = req.userId; // Set by verifyToken middleware from JWT token
 
-  // Here is the query to get all habits for the user. all has the structure: all(query, params, callback).
   db.all(
     'SELECT id, name, category, description, image, createdAt FROM habits WHERE userId = ? ORDER BY createdAt DESC',
     [userId],
-
-    // here's the callback function. Handles the response from the query. If there's an error, sends 500 status with error.
     (err, habits) => {
       if (err) {
         return res.status(500).json({ error: 'Database error' });
       }
-      res.json(habits); // then sends the habits as a JSON response. This will be an array of habit objects that belong to the authenticated user.
+      res.json(habits); // Return array of habits
     }
   );
 };
 
-// now, createHabit, deleteHabit and updateHabit are defined below. They all follow a similar pattern:
-// 1. Get userId from req.userId (set by verifyToken middleware).
-// 2. Perform necessary validation on the input data.
-// 3. Interact with the database to create, delete or update a habit.
-// 4. Handle errors and send appropriate JSON responses back to the client.
+// CREATE HABIT: Add new habit for authenticated user
+// Receives: { name (required), category, description, image }
+// Returns: New habit object with id and createdAt timestamp
 exports.createHabit = (req, res) => {
   const userId = req.userId; 
   const { name, category, description, image } = req.body;
@@ -52,16 +57,15 @@ exports.createHabit = (req, res) => {
   );
 };
 
-// deleteHabit. This function deletes a habit by its ID, but only if it belongs to the authenticated user.
+// DELETE HABIT: Remove habit by ID (security: only if belongs to current user)
+// Receives: habitId from URL parameter (/habits/:id)
+// Returns: Success message on deletion
+// Security: Verifies habit belongs to user before deleting
 exports.deleteHabit = (req, res) => {
   const userId = req.userId;
-  const habitId = req.params.id; // we're saying "get the id from the URL parameters (e.g., /api/habits/:id), pass it to the variable habitId". so this may have something like 
-  // "/1" or "/2" depending on which habit we want to delete.
+  const habitId = req.params.id;
 
-  // db.get is used to check if the habit exists and belongs to the user before attempting to delete it. 
-  // This is important for security, to ensure that users can only delete their own habits. 
-  // If the habit doesn't exist or doesn't belong to the user, it sends a 404 Not Found response. 
-  // If it does exist and belongs to the user, it proceeds to delete it from the database.
+  // First verify habit exists and belongs to this user (security check)
   db.get('SELECT id FROM habits WHERE id = ? AND userId = ?', [habitId, userId], (err, habit) => {
     if (err) {
       return res.status(500).json({ error: 'Database error' });
@@ -71,17 +75,19 @@ exports.deleteHabit = (req, res) => {
       return res.status(404).json({ error: 'Habit not found' });
     }
 
-    // after the checks, we run the delete query.
+    // Delete the habit
     db.run('DELETE FROM habits WHERE id = ?', [habitId], (err) => {
       if (err) {
         return res.status(500).json({ error: 'Database error' });
       }
-      res.json({ message: 'Habit deleted' }); // if successful, it sends a JSON response with a success message.
+      res.json({ message: 'Habit deleted' });
     });
   });
 };
 
-// updating habits. 
+// UPDATE HABIT: Modify habit details (security: only if belongs to current user)
+// Receives: habitId from URL, { name, category, description, image } in body
+// Returns: Success message on update
 exports.updateHabit = (req, res) => {
   const userId = req.userId;
   const habitId = req.params.id;
@@ -109,17 +115,16 @@ exports.updateHabit = (req, res) => {
   });
 };
 
-// Mark a specific habit as complete or incomplete for today
+// MARK HABIT COMPLETE: Toggle habit completion status for today
+// Receives: habitId from URL, { completed: boolean } in body
+// Returns: Success message on update
+// Stores in habitRecords table for tracking daily completions
 exports.markHabitComplete = (req, res) => {
   const userId = req.userId;
   const habitId = req.params.id;
-  const { completed } = req.body; // true or false
+  const { completed } = req.body; // true = completed today, false = not completed
 
-  if (completed === undefined) {
-    return res.status(400).json({ error: 'completed status is required' });
-  }
-
-  // First, verify that this habit belongs to the user
+  // Verify habit belongs to this user (security check)
   db.get('SELECT id FROM habits WHERE id = ? AND userId = ?', [habitId, userId], (err, habit) => {
     if (err) {
       return res.status(500).json({ error: 'Database error' });
@@ -129,10 +134,10 @@ exports.markHabitComplete = (req, res) => {
       return res.status(404).json({ error: 'Habit not found' });
     }
 
-    // Get today's date
+    // Get today's date in YYYY-MM-DD format
     const today = new Date().toISOString().split('T')[0];
 
-    // Insert or update the habitRecord for today
+    // Insert or update habitRecord for today (upsert pattern)
     db.run(
       `INSERT INTO habitRecords (habitId, date, completed)
        VALUES (?, ?, ?)
@@ -148,9 +153,3 @@ exports.markHabitComplete = (req, res) => {
     );
   });
 };
-
-// in summary, this controller file defines the logic for handling CRUD operations on habits.
-// Each function interacts with the database to perform the necessary operations 
-// while ensuring that users can only access and modify their own habits.
-// The functions also handle errors gracefully and send appropriate JSON responses back to the client,
-// which the frontend can then use to update the UI accordingly.

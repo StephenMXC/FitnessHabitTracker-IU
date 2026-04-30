@@ -1,3 +1,15 @@
+// ============================================
+// ERROR BOUNDARY COMPONENT
+// ============================================
+// PURPOSE: Catch and handle React component errors globally.
+// FEATURES:
+// - Catches errors anywhere in component tree
+// - Displays error message and debugging info
+// - Provides button to return to home
+// - Logs errors to console for debugging
+// USAGE: Wrap entire app: <ErrorBoundary><App /></ErrorBoundary>
+// ============================================
+
 import React from 'react';
 import './error-boundary.css';
 
@@ -7,26 +19,24 @@ class ErrorBoundary extends React.Component {
     this.state = { hasError: false, error: null, errorInfo: null };
   }
 
+  // Update state when error is thrown
   static getDerivedStateFromError(error) {
-    // Update state so the next render will show the fallback UI
     return { hasError: true };
   }
 
+  // Log error details for debugging
   componentDidCatch(error, errorInfo) {
-    // Log error to console for debugging
     console.error('Error caught by Error Boundary:', error);
     console.error('Error Info:', errorInfo);
-    
-    // Store error details in state
     this.setState({
       error: error,
       errorInfo: errorInfo
     });
   }
 
+  // Reset error state and return to home
   handleReset = () => {
     this.setState({ hasError: false, error: null, errorInfo: null });
-    // Optionally reload the page
     window.location.href = '/';
   };
 

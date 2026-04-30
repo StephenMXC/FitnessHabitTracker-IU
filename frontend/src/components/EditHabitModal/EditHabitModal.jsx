@@ -1,3 +1,11 @@
+// ============================================
+// EDIT HABIT MODAL - CONTAINER
+// ============================================
+// PURPOSE: Modal overlay for editing existing habits.
+// RECEIVES: { isOpen, onClose, children, habit }
+// FEATURES: Similar to CreateHabitModal but for updates
+// ============================================
+
 import React from 'react';
 import EditHabitForm from './EditHabitForm';
 import '../CreateHabitModal/createHabitModal.css';

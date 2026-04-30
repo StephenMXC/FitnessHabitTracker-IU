@@ -1,20 +1,23 @@
-// This file defines the route for dashboard-related endpoints. 
-//  It connects the GET /api/dashboard/stats endpoint to the getDashboardStats function in dashboardController.js. 
-// The verifyToken middleware is used to protect this route, ensuring that only authenticated users can access their dashboard stats.
+// ============================================
+// DASHBOARD ROUTES
+// ============================================
+// PURPOSE: Define routes for dashboard statistics and daily completion tracking.
+// ENDPOINTS:
+//   GET /api/dashboard/stats - Get dashboard statistics (habits, completion rate, weekly progress)
+//   POST /api/dashboard/mark-completion - Mark when user achieves 100% daily completion
+// SECURITY: All routes require verifyToken middleware (JWT authentication)
+// ============================================
 
-const express = require('express'); // importing express framework to create a router for dashboard endpoints
-const dashboardController = require('../controllers/dashboardController'); // importing the dashboard controller for handling dashboard requests
-const { verifyToken } = require('../middleware/auth');// importing the verifyToken middleware to protect the dashboard stats route. This ensures that only authenticated users can access their dashboard stats.
+const express = require('express');
+const dashboardController = require('../controllers/dashboardController');
+const { verifyToken } = require('../middleware/auth'); // Protect routes - require JWT token
 
-const router = express.Router(); // new router instance to define dashboard routes. This allows us to modularize our routes and keep the code organized. We will export this router and use it in server.js to mount it on the /api/dashboard path.
+const router = express.Router();
 
-router.get('/stats', verifyToken, dashboardController.getDashboardStats); // defining a GET route for /stats. 
-// When a GET request is made to /api/dashboard/stats, the verifyToken middleware will first 
-// check if the user is authenticated. 
-// If they are, it will call the getDashboardStats function in the dashboardController to 
-// handle the request and return the user's dashboard statistics. without that middleware, anyone could access this endpoint 
-// and see stats for any user, which would be a security issue.
+// Get dashboard statistics
+router.get('/stats', verifyToken, dashboardController.getDashboardStats);
 
-router.post('/mark-completion', verifyToken, dashboardController.markDailyCompletion); // POST endpoint to mark daily completion when all habits reach 100%
+// Mark daily completion (when user completes all habits for a day)
+router.post('/mark-completion', verifyToken, dashboardController.markDailyCompletion);
 
 module.exports = router;

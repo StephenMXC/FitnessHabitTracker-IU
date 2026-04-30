@@ -1,3 +1,16 @@
+// ============================================
+// DASHBOARD PAGE COMPONENT
+// ============================================
+// PURPOSE: Display user's habit statistics, completion rates, and weekly progress.
+// FLOW:
+// 1. Load user data from AuthContext
+// 2. Fetch dashboard stats from backend (habits, completion rates, etc.)
+// 3. Load local progress data from localStorage (streak, percentages)
+// 4. Display stat cards and habit progress bars
+// 5. Auto-refresh stats every 5 seconds
+// DISPLAYS: Stats cards, completion rates, weekly progress, habit progress bars
+// ============================================
+
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './dashboard.css';

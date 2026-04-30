@@ -1,3 +1,11 @@
+// ============================================
+// CREATE HABIT MODAL - WRAPPER
+// ============================================
+// PURPOSE: Wrapper that connects CreateHabitForm to CreateHabitModal.
+// RECEIVES: { isOpen, onClose, onSuccess }
+// SENDS: Calls onSuccess callback after habit creation
+// ============================================
+
 import React from 'react';
 import { AVAILABLE_IMAGES, COMMITMENT_TIMES } from '../../pages/Habits/habitsConstant';
 import '../CreateHabitModal/createHabitModal.css';

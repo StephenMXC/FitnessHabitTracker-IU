@@ -1,3 +1,10 @@
+// ============================================
+// CURRENT HABIT MODAL - VIEW/EDIT CONTAINER
+// ============================================
+// PURPOSE: Modal to view and interact with current habit details.
+// RECEIVES: { isOpen, onClose, children, habit }
+// ============================================
+
 import React, { useState, useEffect } from 'react';
 import { CurrentHabitForm } from './CurrentHabitForm';
 import './currentHabitModal.css';

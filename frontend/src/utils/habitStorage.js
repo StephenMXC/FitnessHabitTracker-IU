@@ -1,6 +1,15 @@
-// localStorage utilities for habits data persistence
+// ============================================
+// HABIT LOCAL STORAGE UTILITY
+// ============================================
+// PURPOSE: Persist habit data locally for offline access and performance.
+// FEATURES:
+// - Save habits, percentages, streaks, completion dates to localStorage
+// - Load persisted data on app restart
+// - Handle storage quota errors gracefully
+// - Per-user storage keys (multiple users can use same browser)
+// ============================================
 
-// Helper to create user-specific storage keys
+// Create user-specific storage keys to support multiple users on same browser
 const getStorageKeys = (userId) => ({
   HABITS: `fitnessTracker_habits_${userId}`,
   PERCENTAGES: `fitnessTracker_percentages_${userId}`,
@@ -10,24 +19,19 @@ const getStorageKeys = (userId) => ({
   LAST_INCREMENT_DATE: `fitnessTracker_lastIncrementDate_${userId}`,
 });
 
-// Helper to strip base64 images if storage is full, keeping only essential data
+// Helper to reduce data size if localStorage is full
 const compressHabitForStorage = (habit) => {
   if (!habit) return habit;
-  
-  // Check if image is a base64 data URL (starts with 'data:')
-  // If so, we store it as-is, but if localStorage is full, we might skip it
-  return {
-    ...habit,
-    // Keep image but it will be managed by backend primarily
-  };
+  // Keep essential data, will remove base64 images if storage full
+  return { ...habit };
 };
 
+// SAVE DATA: Store all habit-related state to localStorage for persistence
 export const saveToLocalStorage = (habits, percentages, streak, lastStreakTimestamp, completedDays, lastIncrementDate, userId) => {
   try {
     const STORAGE_KEYS = getStorageKeys(userId);
     const habitsToStore = habits ? habits.map(compressHabitForStorage) : [];
     
-    // Try to save everything
     localStorage.setItem(STORAGE_KEYS.HABITS, JSON.stringify(habitsToStore));
     localStorage.setItem(STORAGE_KEYS.PERCENTAGES, JSON.stringify(percentages));
     localStorage.setItem(STORAGE_KEYS.STREAK, JSON.stringify(streak));
@@ -35,12 +39,11 @@ export const saveToLocalStorage = (habits, percentages, streak, lastStreakTimest
     localStorage.setItem(STORAGE_KEYS.COMPLETED_DAYS, JSON.stringify(completedDays));
     localStorage.setItem(STORAGE_KEYS.LAST_INCREMENT_DATE, JSON.stringify(lastIncrementDate));
   } catch (err) {
-    // If quota exceeded, try removing images and saving metadata only
+    // localStorage quota exceeded - remove images and retry
     if (err.name === 'QuotaExceededError') {
       console.warn('LocalStorage quota exceeded. Saving without images.');
       try {
         const STORAGE_KEYS = getStorageKeys(userId);
-        // Store habits without base64 images
         const habitsWithoutImages = habits ? habits.map(h => ({
           ...h,
           image: h.image && (h.image.startsWith('data:') ? null : h.image)
@@ -61,6 +64,7 @@ export const saveToLocalStorage = (habits, percentages, streak, lastStreakTimest
   }
 };
 
+// LOAD DATA: Retrieve persisted habit data from localStorage
 export const loadFromLocalStorage = (userId) => {
   try {
     const STORAGE_KEYS = getStorageKeys(userId);
@@ -98,6 +102,7 @@ export const loadFromLocalStorage = (userId) => {
   }
 };
 
+// CLEAR DATA: Remove all habit data for a user
 export const clearHabitStorage = (userId) => {
   try {
     const STORAGE_KEYS = getStorageKeys(userId);

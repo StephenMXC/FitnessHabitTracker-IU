@@ -1,3 +1,18 @@
+// ============================================
+// HABITS PAGE COMPONENT
+// ============================================
+// PURPOSE: Manage user's daily habits - create, edit, delete, and track completion.
+// FLOW:
+// 1. Load habits from backend and localStorage
+// 2. Merge backend data with local completion percentages
+// 3. Display habit cards with completion status
+// 4. Allow users to mark habits complete/incomplete
+// 5. Track daily completion (100% = all habits done)
+// 6. Sync completion data to backend
+// SENDS TO BACKEND: Habit CRUD operations, daily completion status
+// RECEIVES FROM BACKEND: User's habits, dashboard stats
+// ============================================
+
 import React, { useState, useEffect, useRef } from 'react';
 import './habits.css';
 import { FaPlus } from "react-icons/fa";

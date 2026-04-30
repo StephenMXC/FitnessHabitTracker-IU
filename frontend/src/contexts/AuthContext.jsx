@@ -1,31 +1,40 @@
+// ============================================
+// AUTH CONTEXT - GLOBAL AUTHENTICATION STATE
+// ============================================
+// PURPOSE: Manage login, signup, logout and share auth state across entire app.
+// FLOW:
+// 1. AuthProvider wraps app and provides auth functions/state
+// 2. useAuth() hook lets components access authentication data
+// 3. Persists user session in localStorage for page reloads
+// PROVIDES: { user, isLoading, error, login, signup, logout, isAuthenticated }
+// ============================================
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { authAPI } from '../services/api';
 
-// Create Auth Context
-const AuthContext = createContext(null); // this creates a tunnel through which react pipes data through the component tree.
-// it is like a TV channel that, prior to broadcasting, reserves a frequency for itself. The NULL value is there 
-// for a component that tunes in before the Provider is set up (which is why useAuth() throws an error instead of silently returning null).
+// Create context for sharing auth state throughout app
+const AuthContext = createContext(null);
 
-// Auth Provider Component
+// AUTH PROVIDER COMPONENT: Wrap app to provide auth functionality
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Check if user is already logged in (token exists) on app load
+  // Check if user is already logged in on app load (restore from localStorage)
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     const userId = localStorage.getItem('userId');
     const username = localStorage.getItem('username');
 
     if (token && userId && username) {
-      setUser({ userId, token, username });
+      setUser({ userId, token, username }); // User is already logged in
     }
 
     setIsLoading(false);
   }, []);
 
-  // Login function
+  // LOGIN FUNCTION: Authenticate user and store token
   const login = async (username, password) => {
     setError(null);
     setIsLoading(true);
@@ -34,7 +43,7 @@ export function AuthProvider({ children }) {
       const response = await authAPI.login(username, password);
       const { token, userId } = response;
 
-      // Store token, userId, and username in localStorage
+      // Store token and user info in localStorage for persistence
       localStorage.setItem('authToken', token);
       localStorage.setItem('userId', userId);
       localStorage.setItem('username', username);
@@ -50,7 +59,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Signup function
+  // SIGNUP FUNCTION: Register new user and store token
   const signup = async (username, email, password) => {
     setError(null);
     setIsLoading(true);
@@ -59,7 +68,7 @@ export function AuthProvider({ children }) {
       const response = await authAPI.signup(username, email, password);
       const { token, userId } = response;
 
-      // Store token, userId, and username in localStorage
+      // Store token and user info in localStorage for persistence
       localStorage.setItem('authToken', token);
       localStorage.setItem('userId', userId);
       localStorage.setItem('username', username);
@@ -75,9 +84,8 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Logout function
+  // LOGOUT FUNCTION: Clear authentication and session
   const logout = () => {
-    // Keep habit storage intact so data persists across sessions
     localStorage.removeItem('authToken');
     localStorage.removeItem('userId');
     localStorage.removeItem('username');
@@ -85,6 +93,7 @@ export function AuthProvider({ children }) {
     setError(null);
   };
 
+  // Context value - all data/functions available to consumers
   const value = {
     user,
     isLoading,
@@ -98,7 +107,7 @@ export function AuthProvider({ children }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-// Custom hook to use auth context
+// CUSTOM HOOK: Use auth context in any component
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {

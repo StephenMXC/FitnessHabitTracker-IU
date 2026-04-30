@@ -1,36 +1,27 @@
-// route file for habits endpoints. 
-// defines routes for CRUD ops on habits and connects them to appropriate controller functions in habitsController.js.
-// All routes are protected with verifyToken middleware to ensure only authenticated users can access them.
+// ============================================
+// HABITS ROUTES
+// ============================================
+// PURPOSE: Define routes for habit management (CRUD operations).
+// ENDPOINTS:
+//   GET /api/habits - Get all habits for authenticated user
+//   POST /api/habits - Create new habit
+//   PUT /api/habits/:id - Update habit by ID
+//   DELETE /api/habits/:id - Delete habit by ID
+//   POST /api/habits/:id/mark-complete - Toggle habit completion status
+// SECURITY: All routes require verifyToken middleware (JWT authentication)
+// ============================================
 
-const express = require('express'); // importing express.
-const habitsController = require('../controllers/habitsController');// importing habits controller to handle habit-related requests. 
-// This file contains the logic for creating, reading, updating and deleting habits in the database.
-const { verifyToken } = require('../middleware/auth'); // importing the verifyToken middleware to protect
-//  the habit routes. only authenticated users can access
-//  these routes. // without this middlewar, functionally, the controller will still work, but then everyone could access the routes and manipulate the data, 
-// an obvious security issue.
+const express = require('express');
+const habitsController = require('../controllers/habitsController');
+const { verifyToken } = require('../middleware/auth'); // Protect routes - require JWT token
 
-const router = express.Router(); // new router instance. this allows defining routes in this file and exporting it to be used in server.js.
+const router = express.Router();
 
-// routes for habits CRUD operations. Each route is protected with verifyToken middleware to ensure only authenticated users access the routes.
+// All habit routes require authentication (verifyToken middleware)
 router.get('/', verifyToken, habitsController.getHabits);
 router.post('/', verifyToken, habitsController.createHabit);
 router.put('/:id', verifyToken, habitsController.updateHabit);
 router.delete('/:id', verifyToken, habitsController.deleteHabit);
 router.post('/:id/mark-complete', verifyToken, habitsController.markHabitComplete);
 
-module.exports = router;
-
-
-// In summary,
-// this file defines
-// the routes for managing 
-// habits in the application. 
-// It connects these routes to the 
-// corresponding controller functions 
-// that handle the business logic for 
-// each operation. By using the verifyToken
-// middleware, it ensures that only 
-// authenticated users can perform actions 
-// on their habits, thus maintaining the 
-// security of the application.          
+module.exports = router;          

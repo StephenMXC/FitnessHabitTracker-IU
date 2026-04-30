@@ -1,3 +1,14 @@
+// ============================================
+// CREATE HABIT MODAL - CONTAINER
+// ============================================
+// PURPOSE: Modal overlay container for creating new habits.
+// RECEIVES: { isOpen, onClose, children, title }
+// FEATURES:
+// - Shows/hides based on isOpen prop
+// - Allows click-outside to close (overlay)
+// - Prevents propagation of inner clicks
+// ============================================
+
 import React from 'react';
 import { FaTimes } from "react-icons/fa";
 import './createHabitModal.css';

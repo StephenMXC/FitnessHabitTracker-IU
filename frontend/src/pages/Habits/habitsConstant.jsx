@@ -1,4 +1,13 @@
-// StatsOverview.jsx
+// ============================================
+// HABITS CONSTANTS & UTILITIES
+// ============================================
+// PURPOSE: Store habit-related configuration data and helper functions.
+// INCLUDES:
+// - Available habit images
+// - Commitment time options
+// - Stat card template data
+// - Helper functions for formatting
+// ============================================
 
 import { FaPlus } from "react-icons/fa";
 import { CiViewList } from "react-icons/ci";
@@ -10,6 +19,7 @@ import noSocialMediaImage from '../../assets/noSocialMedia.jpg';
 import meditationImage from '../../assets/Meditate.jpg';
 import gymImage from '../../assets/gymImage.png';
 
+// Template for dashboard stat cards
 export const STATS_CARD_DATA = [
   {
     id: "streak",
@@ -31,6 +41,7 @@ export const STATS_CARD_DATA = [
   },
 ];
 
+// Available habit images for users to select from
 export const AVAILABLE_IMAGES = [
   { id: 'reading', name: 'Reading', image: readingImage },
   { id: 'stretching', name: 'Stretching', image: stretchingImage },
@@ -39,6 +50,7 @@ export const AVAILABLE_IMAGES = [
   { id: 'gym', name: 'Gym', image: gymImage },
 ];
 
+// Time commitment options for habits
 export const COMMITMENT_TIMES = [
   { value: '15', label: '15 mins/day' },
   { value: '30', label: '30 mins/day' },
@@ -48,6 +60,7 @@ export const COMMITMENT_TIMES = [
   { value: '180', label: '3 hours/day' },
 ];
 
+// Convert commitment time value to readable format
 export function formatCommitmentTime(value) {
   if (!value) return '30 mins/day';
 
@@ -68,6 +81,7 @@ export function formatCommitmentTime(value) {
   return value;
 }
 
+// Get the numeric value from commitment time label
 export function getCommitmentValue(value) {
   if (!value) return '30';
 

@@ -1,3 +1,17 @@
+// ============================================
+// DAILY GOAL CONTAINER COMPONENT
+// ============================================
+// PURPOSE: Display individual habit card with completion status and actions.
+// RECEIVES:
+// - title: habit name
+// - image: habit image URL
+// - engagementTime: commitment time label (e.g. "30 mins/day")
+// - isCompleted: boolean - whether habit completed today
+// - buttonAction: function to toggle completion status
+// - modalAction: function to open edit modal
+// DISPLAYS: Habit card with background image, status badge, and mark complete button
+// ============================================
+
 import { BsThreeDotsVertical } from "react-icons/bs";
 import '../../pages/Habits/habits.css';
 

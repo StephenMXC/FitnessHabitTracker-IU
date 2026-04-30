@@ -1,3 +1,10 @@
+// ============================================
+// CURRENT HABIT FORM - VIEW/EDIT COMPONENT
+// ============================================
+// PURPOSE: Display current habit details and allow interactions.
+// RECEIVES: { habit, onClose }
+// ============================================
+
 import React, { useState } from 'react';
 import './currentHabitForm.css';
 

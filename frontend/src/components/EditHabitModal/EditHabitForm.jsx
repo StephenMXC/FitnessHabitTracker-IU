@@ -1,3 +1,15 @@
+// ============================================
+// EDIT HABIT FORM - FORM COMPONENT
+// ============================================
+// PURPOSE: Form to edit existing habit details.
+// RECEIVES:
+// - habit: habit object to edit
+// - onClose: callback to close modal
+// - onSuccess: callback after habit updated
+// FIELDS: Name, Category, Description, Image, Commitment Time (pre-populated)
+// SENDS TO BACKEND: Updates habit via habitsAPI.updateHabit()
+// ============================================
+
 import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import '../CreateHabitModal/createHabitModal.css';

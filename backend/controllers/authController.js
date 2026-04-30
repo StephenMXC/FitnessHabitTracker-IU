@@ -1,13 +1,25 @@
-const bcrypt = require('bcryptjs'); // importing bcryptjs for password hashing and verification.
-const jwt = require('jsonwebtoken');// importing jsonwebtoken for generating and verifying JWT tokens.
-const db = require('../database'); // importing the database connection.
-const { JWT_SECRET } = require('../middleware/auth'); // importing JWT_SECRET from the auth middleware, 
-//                                                       which is used for signing JWT tokens.
+// ============================================
+// AUTHENTICATION CONTROLLER
+// ============================================
+// PURPOSE: Handle user registration (signup) and login (authentication).
+// FLOW:
+//   Signup: Validate input → Hash password → Store in DB → Generate JWT → Return token
+//   Login: Validate input → Find user → Verify password → Generate JWT → Return token
+//
+// RECEIVES: req.body with username, email, password
+// RETURNS: JSON with token (for frontend to store and use in API requests)
+// ============================================
 
-// the signup function, which will handle user registration.
+const bcrypt = require('bcryptjs'); // Password hashing library
+const jwt = require('jsonwebtoken'); // JWT token generation and verification
+const db = require('../database'); // Database connection
+const { JWT_SECRET } = require('../middleware/auth'); // Secret key for signing tokens
+
+// SIGNUP ENDPOINT: Create new user account
+// Receives: { username, email, password }
+// Returns: { token, userId } on success; error message on failure
 exports.signup = (req, res) => {
-  const { username, email, password } = req.body;// extracting username, email, and password 
-  //                                                from the request body.
+  const { username, email, password } = req.body;
 
   // Validation
   if (!username || !email || !password) {
@@ -18,7 +30,7 @@ exports.signup = (req, res) => {
     return res.status(400).json({ error: 'Password must be at least 6 characters' });
   }
 
-  // Hash password
+  // Hash password with 10 salt rounds for security
   const hashedPassword = bcrypt.hashSync(password, 10);
 
   // Insert user into database
@@ -33,11 +45,8 @@ exports.signup = (req, res) => {
         return res.status(500).json({ error: 'Database error', details: err.message });
       }
 
-      // Generate JWT
-      // yes, the token is generated here, within the callback function of the db.run method. 
-      // This is because we need to ensure that the user has been successfully inserted into the database 
-      // before we can generate a JWT token for that user. The this.lastID property gives us the ID of the newly inserted user, 
-      // which we can then use as the payload for the JWT token. By generating the token inside the callback, we ensure that we have access to the correct user ID and that the token is only generated if the user was successfully created in the database.
+      // Generate JWT token with userId payload (expires in 30 days)
+      // Token is generated after successful DB insertion to ensure we have the correct userId
       const token = jwt.sign({ userId: this.lastID }, JWT_SECRET, { expiresIn: '30d' });
       res.status(201).json({ message: 'Signup successful', token, userId: this.lastID });
     }
@@ -45,17 +54,13 @@ exports.signup = (req, res) => {
 };
 
 
-// the login function, which will handle user authentication.
+// LOGIN ENDPOINT: Authenticate user and return JWT token
+// Receives: { username, password }
+// Returns: { token, userId } on success; error message on failure
 exports.login = (req, res) => {
-  const { username, password } = req.body; // extracting username and password from the request body.
+  const { username, password } = req.body;
 
-  // Validation
-  if (!username || !password) {
-    return res.status(400).json({ error: 'Username and password are required' });
-  }
-
-  // Find user
-  // we find the id and password for a certain username.
+  // Find user by username in database
   db.get('SELECT id, password FROM users WHERE username = ?', [username], (err, user) => {
     if (err) {
       return res.status(500).json({ error: 'Database error' });
@@ -65,30 +70,15 @@ exports.login = (req, res) => {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
 
-    // Verify password
-    const isPasswordValid = bcrypt.compareSync(password, user.password); // comparing the provided password with the hashed password stored in the database using bcrypt's compareSync method.
+    // Compare provided password with stored hashed password
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
 
-    // Generate JWT
-    // if the password is valid, we generate a JWT token for the user.
-    // this token will include the user's ID as payload and will be signed using the JWT_SECRET. 
-    // The token will also have an expiration time of 30 days. 
-    // Finally, we send a JSON response back to the client that includes a success message, 
-    // the generated token, and the user's ID.
-    // when the user logs out, the token can be invalidated on the client side
-    // by simply deleting it from local storage or wherever it's stored.
+    // Generate JWT token with userId payload (expires in 30 days)
+    // Frontend will store this token and send it in Authorization header for protected routes
     const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '30d' });
     res.json({ message: 'Login successful', token, userId: user.id });
   });
 };
-
-
-// in summary, this authController file defines the logic for user registration and authentication.
-// The signup function handles user registration by validating input, hashing the password, 
-// inserting the user into the database, and generating a JWT token for the new user.
-// The login function handles user authentication by validating input, checking the username and 
-// password against the database, 
-// and generating a JWT token if the credentials are valid. 
-// Both functions also handle errors and send appropriate JSON responses back to the client.

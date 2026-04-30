@@ -1,3 +1,11 @@
+// ============================================
+// STAT CARD COMPONENT
+// ============================================
+// PURPOSE: Display a single statistic with icon and value.
+// RECEIVES: { title, value, subtitle, icon }
+// USAGE: <StatCard title="Streak" value="12 Days" icon={streakIcon} />
+// ============================================
+
 function StatCard({ title, value, subtitle, icon }) {
   return (
     <div className="current-streak-card">

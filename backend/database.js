@@ -1,6 +1,11 @@
-// This connects to SQLite and creates tables if they don’t exist.
+// ============================================
+// DATABASE SETUP & INITIALIZATION
+// ============================================
+// PURPOSE: Connect to SQLite database and create schema tables on startup.
+// TABLES: users, habits, dailyCompletion, habitRecords
+// ============================================
 
-const sqlite3 = require('sqlite3').verbose(); // This basically imports the library for working with SQLite databases in Node.js. 
+const sqlite3 = require('sqlite3').verbose();
 //                                               The require function is how we include external modules in Node.js. 
 //                                               It's like "import" in other languages.  
 //                                               The .verbose() part is just for better error messages. Without it, you might get less helpful error logs.
@@ -28,7 +33,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
 // It is the main function that sets up our database schema. 
 // It creates three tables: users, habits, and habitRecords. Each table has its own set of columns and constraints.
 function initializeDatabase() {
-  // Drop existing tables to start fresh for demo (in reverse order due to foreign keys)
+  // Drop tables in reverse order (foreign key constraints require this order)
   db.run('DROP TABLE IF EXISTS habitRecords', (err) => {
     if (err) console.error('Error dropping habitRecords table:', err);
     db.run('DROP TABLE IF EXISTS dailyCompletion', (err) => {
@@ -101,9 +106,5 @@ function initializeDatabase() {
   });
 }
 
-// Finally, we export the db object so that other parts of our application can use it to interact with the database. 
+// EXPORT: db object is imported by server.js and all controllers
 module.exports = db;
-
-// In summary, this file sets up a connection to a SQLite database, 
-// creates the necessary tables for our habit tracking application, 
-// and exports the database connection for use in other parts of the backend.

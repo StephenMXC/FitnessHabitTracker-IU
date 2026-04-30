@@ -1,3 +1,10 @@
+// ============================================
+// HABIT MODAL - GENERIC MODAL CONTAINER
+// ============================================
+// PURPOSE: Reusable modal component for habit-related content.
+// RECEIVES: { isOpen, onClose, children }
+// ============================================
+
 import React from 'react';
 import { FaTimes } from "react-icons/fa";
 import './habitModal.css';

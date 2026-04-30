@@ -1,3 +1,17 @@
+// ============================================
+// USE HABIT ACTIONS CUSTOM HOOK
+// ============================================
+// PURPOSE: Manage all habit-related API calls and state management.
+// PROVIDES:
+// - habitsList: array of all user's habits
+// - fetchHabits: get all habits from backend
+// - createHabit: add new habit
+// - updateHabit: modify existing habit
+// - deleteHabit: remove habit
+// - loading/error states
+// USAGE: const { habitsList, fetchHabits, ... } = useHabitActions();
+// ============================================
+
 import { useState, useCallback } from 'react';
 import { habitsAPI } from '../services/api';
 
@@ -7,6 +21,7 @@ export const useHabitActions = () => {
   const [error, setError] = useState(null);
   const [editLoading, setEditLoading] = useState(false);
 
+  // Fetch all habits for current user from backend
   const fetchHabits = useCallback(async () => {
     try {
       setLoading(true);
@@ -23,6 +38,7 @@ export const useHabitActions = () => {
     }
   }, []);
 
+  // Create new habit
   const createHabit = useCallback(
     async (name, category, description, selectedImage, commitmentTime) => {
       if (!name.trim()) {
@@ -57,6 +73,7 @@ export const useHabitActions = () => {
     []
   );
 
+  // Update existing habit
   const updateHabit = useCallback(async (habitId, updatedData) => {
     try {
       setEditLoading(true);
@@ -92,6 +109,7 @@ export const useHabitActions = () => {
     }
   }, []);
 
+  // Delete habit
   const deleteHabit = useCallback(async (habitId) => {
     try {
       setEditLoading(true);
