@@ -17,7 +17,7 @@ import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.jsx';
 // Mount React app to #root element in index.html
 // StrictMode: development tool to highlight potential problems
 // ErrorBoundary: catches runtime errors and shows fallback UI
-creatRoot(document.getElementById('root')).render(
+createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ErrorBoundary>
       <App />
