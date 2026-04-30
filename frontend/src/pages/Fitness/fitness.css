@@ -20,6 +20,7 @@
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
 }
 
+
 form {
   row-gap: 12px;
   width: 96%;
@@ -147,10 +148,12 @@ form {
   }
 
   .left-div {
+    width: -webkit-fill-available;
     padding: 28px 24px;
   }
 
   .right-div {
+    width: -webkit-fill-available;
     padding: 28px 24px;
     margin-top: 22px;
   }
