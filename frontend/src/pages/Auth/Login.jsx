@@ -117,7 +117,7 @@ const Login = () => {
       </div>
 
       <div className="right-div">
-        <h1>Welcome to FitnessApp</h1>
+        <h1>Welcome to FitTrack</h1>
         <p>Your ultimate companion for tracking workouts, monitoring progress, and achieving your fitness goals.</p>
       </div>
     </div>
