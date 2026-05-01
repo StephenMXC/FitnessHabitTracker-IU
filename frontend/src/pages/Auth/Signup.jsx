@@ -77,7 +77,7 @@ const Signup = () => {
         <div className="left-div-header">
           <div className="fitnessApp-title">
             <IoFitness size={40} color="#4CAF50" />
-            <p>FitnessApp</p>
+            <p>FitTrack</p>
           </div>
           <div className="Start-your-journey">
             <h1>Start Your Journey</h1>
