@@ -68,6 +68,8 @@ If not, run cd FitnessHabitTracker-IU-main/FitnessHabitTracker-IU-main from the 
 ---
 
 ### 3. **Configure environment variables:**
+Open another terminal, leaving the first one on, and do the following:
+
    - Copy `.env.example` in /backend/ to `.env`.
     Preferably, in a new terminal in /backend, run:
    - 
