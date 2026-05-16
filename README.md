@@ -50,8 +50,8 @@ Unzip the submitted folder.
 
 Open a terminal, run in order:
 
-(Before running, make sure you are in "FitnessHabitTracker-IU-main/FitnessHabitTracker-IU-main/". 
-If not, run cd FitnessHabitTracker-IU-main/FitnessHabitTracker-IU-main from the place where the extracted file appears after unzipping. Then run the following.)
+(Before running, make sure you are in "Umer-Yousuf_9216421_DLBCSPJWD01_PJWD\FitnessHabitTracker-IU-main\". 
+If not, run ```cd Umer-Yousuf_9216421_DLBCSPJWD01_PJWD\FitnessHabitTracker-IU-main\``` from the place where the extracted file appears after unzipping. Then run the following.)
 ```
   cd backend
 ```
@@ -79,7 +79,7 @@ Open another terminal, leaving the first one on, and do the following:
 
 ### 4. Start Frontend
 
-Open yet another new terminal in FitnessHabitTracker-IU-main/FitnessHabitTracker-IU-main/:
+Open yet another new terminal in Umer-Yousuf_9216421_DLBCSPJWD01_PJWD\FitnessHabitTracker-IU-main\:
 
 ```
   cd frontend
